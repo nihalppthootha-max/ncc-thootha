@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUHSS THOOTHA NCC Cadet Directory</title>
+<style>
+:root{--navy:#102a43;--blue:#176b87;--gold:#f2c14e;--bg:#f3f6f9;--card:#fff;--text:#172b4d;--muted:#627d98}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:white;padding:26px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:clamp(1.35rem,4vw,2rem)}
+header p{margin:0;color:#e4f1f7}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;background:#fff;box-shadow:0 2px 8px #00000012;position:sticky;top:0;z-index:5}
+nav button{border:0;border-radius:8px;padding:10px 14px;background:#e8eef3;color:var(--navy);font-weight:700;cursor:pointer}
+nav button.active,nav button:hover{background:var(--blue);color:white}
+main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
+.page{display:none}.page.active{display:block}
+.hero,.panel{background:var(--card);border-radius:14px;padding:24px;box-shadow:0 4px 18px #102a4310;margin-bottom:18px}
+.hero{text-align:center;background:linear-gradient(135deg,#fff,#e7f3f7)}
+.hero h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:5px 0 12px}
+.hero p{line-height:1.65;color:var(--muted);max-width:750px;margin:0 auto 18px}
+.action-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.primary{background:var(--blue);color:white;border:0;border-radius:8px;padding:11px 16px;font-weight:bold;cursor:pointer}
+.secondary{background:#e8eef3;color:var(--navy);border:0;border-radius:8px;padding:11px 16px;font-weight:bold;cursor:pointer}
+.section-title{margin:0 0 8px;color:var(--navy)}
+.muted{color:var(--muted);line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
+.stat{background:#fff;padding:18px;border-radius:12px;text-align:center;border:1px solid #e0e8ef}
+.stat strong{display:block;font-size:1.6rem;color:var(--blue);margin-bottom:5px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
+#searchInput{flex:1;min-width:220px;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font-size:1rem}
+#cadetCount{color:var(--muted);font-weight:700}
+.cadet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.cadet-card{background:white;border-radius:13px;overflow:hidden;box-shadow:0 4px 15px #102a4312;border:1px solid #e3eaf0}
+.cadet-photo{width:100%;height:230px;object-fit:cover;background:#e7edf2;display:block}
+.cadet-header{padding:14px 16px;background:#eaf4f7;border-bottom:1px solid #dbe8ed}
+.cadet-header h3{margin:0 0 7px;color:var(--navy);font-size:1.08rem}
+.cadet-header .number{font-size:.9rem;color:var(--blue);font-weight:bold;overflow-wrap:anywhere}
+.cadet-details{padding:14px 16px}
+.detail{display:grid;grid-template-columns:112px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #edf1f5;font-size:.92rem}
+.detail:last-child{border-bottom:0}
+.detail b{color:#486581}.detail span{overflow-wrap:anywhere}
+.empty-state{text-align:center;border:2px dashed #bdcbd8;border-radius:12px;padding:34px 18px;background:#fff}
+.empty-state .icon{font-size:2rem}
+.photo-box{width:160px;height:190px;background:#dce6ed;border-radius:10px;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#486581}
+.photo-box img{width:100%;height:100%;object-fit:cover}
+.school-photo-box{width:100%;height:360px;background:#dce6ed;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#486581;font-size:1.15rem}
+.school-photo-box img{width:100%;height:100%;object-fit:cover}
+footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem}
+@media(max-width:480px){nav{gap:6px}nav button{padding:9px 10px;font-size:.88rem}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>DUHSS THOOTHA NCC CADET DIRECTORY</h1>
+  <p>28 Kerala Battalion NCC · Ottapalam</p>
+</header>
+<nav aria-label="Main navigation">
+  <button class="active" data-page="home" onclick="showPage('home',this)">Home</button>
+  <button data-page="firstYear" onclick="showPage('firstYear',this)">First Year</button>
+  <button data-page="secondYear" onclick="showPage('secondYear',this)">Second Year</button>
+  <button data-page="ano" onclick="showPage('ano',this)">ANO Details</button>
+  <button data-page="about" onclick="showPage('about',this)">About Institution</button>
+</nav>
+<main>
+  <section id="home" class="page active">
+    <div class="hero">
+      <p><strong>NATIONAL CADET CORPS</strong></p>
+      <h2>Welcome to the NCC Cadet Directory</h2>
+      <p>DUHSS THOOTHA NCC unit directory. Use this website to browse the year-wise cadet list, search cadet records, and view institution and ANO information.</p>
+      <div class="action-row">
+        <button class="primary" onclick="showPage('firstYear')">Open First Year</button>
+        <button class="primary" onclick="showPage('secondYear')">Open Second Year</button>
+        <button class="secondary" onclick="showPage('ano')">ANO Details</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>39</strong>Second Year records</div>
+      <div class="stat"><strong>—</strong>First Year records to be added</div>
+      <div class="stat"><strong>28 K BN</strong>NCC Battalion</div>
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <h2 class="section-title">Directory guide</h2>
+      <p class="muted">Choose <b>First Year</b> to see the reserved space for the new cadet list, or choose <b>Second Year</b> to browse the existing 39 records. Use the search field to filter Second Year cadets by name, cadet number, class, or rank.</p>
+    </div>
+  </section>
+
+  <section id="firstYear" class="page">
+    <div class="panel">
+      <h2 class="section-title">First Year Cadets</h2>
+      <p class="muted">This section is intentionally left empty until First Year cadet details are provided.</p>
+      <div class="empty-state">
+        <div class="icon">🎖️</div>
+        <h3>First Year details will be added here</h3>
+        <p class="muted">Space reserved for each cadet's Photo, Name, Cadet Number, Rank, Phone Number, Parent Details, Blood Group, Date of Birth, Attendance, and Class.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secondYear" class="page">
+    <div class="panel">
+      <h2 class="section-title">Second Year Cadets</h2>
+      <p class="muted">Browse the registered Second Year cadets. Some records do not yet have a photo or class entry.</p>
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Search by name, cadet number, rank, or class..." aria-label="Search Second Year cadets">
+        <span id="cadetCount">39 cadets</span>
+      </div>
+      <div id="cadetContainer" class="cadet-grid"></div>
+    </div>
+  </section>
+
+  <section id="ano" class="page">
+    <div class="panel">
+      <h2 class="section-title">Associate NCC Officer (ANO) Details</h2>
+      <p class="muted">These details are displayed as read-only information. To fill the blank fields, edit the placeholder text in the HTML code.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start">
+        <div style="background:#eaf4f7;border-radius:12px;padding:18px;text-align:center">
+          <div class="photo-box">
+            <img src="https://i.ibb.co/Q3txR7Wf/IMG-20261026-WA0029.jpg" alt="ANO Photo" onerror="this.parentElement.textContent='Photo space'">
+          </div>
+          <h3 style="margin:8px 0">ABDUL HAKEEM</h3>
+          <p style="margin:0;color:#176b87;font-weight:bold">CTO</p>
+        </div>
+        <div>
+          <div class="detail"><b>Name</b><span>ABDUL HAKEEM</span></div>
+          <div class="detail"><b>Rank</b><span>CTO</span></div>
+          <div class="detail"><b>Address</b><span>THOOTHA THEKKEPPURAM 679357 Malaikathodi house vazhenkada po </span></div>
+          <div class="detail"><b>Unit</b><span>28 KERALA BN OTTAPALAM</span></div>
+          <div class="detail"><b>Phone Number</b><span>9605688025</span></div>
+          <div class="detail"><b>Date of Birth</b><span>07-05-1996</span></div>
+          <div class="detail"><b>Blood Group</b><span>A+ve</span></div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:16px">Visitors cannot edit these fields on the website. Open the HTML file in a code editor and replace the bracketed placeholders with the official details.</p>
+    </div>
+  </section>
+
+  <section id="about" class="page">
+    <div class="panel">
+      <h2 class="section-title">About Institution</h2>
+      <p class="muted">Institution profile details are displayed below. Replace the bracketed placeholders in the HTML source code to add the official information.</p>
+
+      <div style="margin:18px 0 22px;background:#eaf4f7;border-radius:14px;padding:16px;text-align:center">
+        <div class="school-photo-box">
+          <img src="https://i.ibb.co/C3k0DRxp/darul-uloom-higher-secondary-school-thootha-malappuram-secondary-schools-uuzfkdpy50-250.jpg" alt="School building photo" onerror="this.parentElement.textContent='Large School Photo Space'">
+        </div>
+      </div>
+
+      <div class="detail"><b>Institution Name</b><span>DUHSS THOOTHA</span></div>
+      <div class="detail"><b>Pincode</b><span>679357</span></div>
+      <div class="detail"><b>Principal</b><span>KK RAHMATHULLA</span></div>
+
+      <h3 style="margin-top:24px;color:#102a43">NCC Cadet Strength</h3>
+      <div class="stats">
+        <div class="stat"><strong>33</strong>First Year SD</div>
+        <div class="stat"><strong>32</strong>First Year SW</div>
+        <div class="stat"><strong>23</strong>Second Year SD</div>
+        <div class="stat"><strong>16</strong>Second Year SW</div>
+      </div>
+
+      <h3 style="margin-top:24px;color:#102a43">About NCC</h3>
+      <p class="muted">The National Cadet Corps (NCC) is a youth organisation that encourages discipline, leadership, teamwork, responsibility, and service to the community.</p>
+      <p class="muted">To fill the remaining details, open this HTML file in a code editor and replace the bracketed placeholders with the official school information and cadet counts.</p>
+    </div>
+  </section>
+</main>
+<footer>DUHSS THOOTHA NCC Cadet Directory · 28 Kerala Battalion NCC, Ottapalam</footer>
+
+<script>
+const secondYear = [
+{no:"01",name:"MUHAMMED FAHEEM.",cadetNo:"KL2025SDIA3211194",rank:"Cadet",phone:"9847831460",father:"ABDUL KAREEM K",mother:"REJEENA M",blood:"AB+",dob:"24-11-2008",attendance:"NULL",className:"B2",image:"https://i.ibb.co/QFD3mTG7/1-5-jpg.jpg"},
+{no:"02",name:"ALFAS TK",cadetNo:"KL2025SDIA3211195",rank:"Cadet",phone:"9745310688",father:"MUHAMMED ASHRAF TK",mother:"SUHARA KT",blood:"A+",dob:"17-04-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/Xxc2yjZQ/1-7.jpg"},
+{no:"03",name:"AKHIL K",cadetNo:"KL2025SDIA3211196",rank:"Cadet",phone:"8547106823",father:"RAMACHANDRAN K",mother:"CHITHRA M",blood:"O+",dob:"17-10-2008",attendance:"NULL",className:"E2",image:"https://i.ibb.co/1tWKn1Ty/27-JPG.jpg"},
+{no:"04",name:"MOHAMMED NIHAL P P",cadetNo:"KL2025SDIA3211197",rank:"Cadet",phone:"8592060875",father:"MOHAMMED SHAKKEER P P",mother:"RAJNA P P",blood:"B+",dob:"23-03-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/7dp44h9V/1-3.jpg"},
+{no:"05",name:"ABDULLA SHADI KK",cadetNo:"KL2025SDIA3211198",rank:"Cadet",phone:"7902689222",father:"SHOUKATHALI K K",mother:"FASEELA K",blood:"O+",dob:"23-11-2008",attendance:"NULL",className:"C2",image:"https://i.ibb.co/q3LxcvCp/33-JPG.jpg"},
+{no:"06",name:"MUHAMMED SHEFIN. V",cadetNo:"KL2025SDIA3211199",rank:"Cadet",phone:"9656666106",father:"SAKKEER V",mother:"JASEENA KT",blood:"B+",dob:"11-05-2009",attendance:"NULL",className:"B2",image:"https://i.ibb.co/cXyRLPX6/Whats-App-Image-2026-10-02-at-8-21-51-AM.jpg"},
+{no:"07",name:"MUHAMMED SAFVAN TK",cadetNo:"KL2025SDIA3211200",rank:"Cadet",phone:"9745976898",father:"ABDUSSALAM TK",mother:"RASHEEDA C",blood:"A+",dob:"23-11-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/Ld7Kj0Q9/1-6-jpg.jpg"},
+{no:"08",name:"MUHAMMED SHIFIN ROSHEN K",cadetNo:"KL2025SDIA3211201",rank:"Cadet",phone:"9544274612",father:"ABDUL SALAM K",mother:"BUSHRA P",blood:"B+",dob:"21-02-2009",attendance:"NULL",className:"D2",image:"https://i.ibb.co/sdsn4tVN/1-24-jpg.jpg"},
+{no:"09",name:"MUHAMMED ANSHIF O",cadetNo:"KL2025SDIA3211202",rank:"Cadet",phone:"8606688821",father:"ABDHUL GAFOOR",mother:"MUFHEEDA",blood:"A+",dob:"10-04-2010",attendance:"NULL",className:"D2",image:"https://i.ibb.co/v4L6Z2yk/31-JPG.jpg"},
+{no:"10",name:"ABHINAND. V. K",cadetNo:"KL2025SDIA3211203",rank:"Cadet",phone:"8113090790",father:"MOHANDAS V K",mother:"SANGEETHA P",blood:"B+",dob:"15-04-2009",attendance:"NULL",className:"C2",image:"https://i.ibb.co/k6QrDZLh/Whats-App-Image-2026-10-01-at-8-11-34-PM.jpg"},
+{no:"11",name:"MUHAMMED SHAMIL K",cadetNo:"KL2025SDIA3211204",rank:"Cadet",phone:"7907466929",father:"MUJEEB RAHMAN K",mother:"SUMAYYA N",blood:"O+",dob:"07-12-2008",attendance:"NULL",className:"D2",image:"https://i.ibb.co/2T0vSjG/1-4.jpg"},
+{no:"12",name:"MOHAMMED SHAMIL PT",cadetNo:"KL2025SDIA3211205",rank:"Cadet",phone:"9947634636",father:"SAKKEER PT",mother:"KHAIRUNNISA A",blood:"B+",dob:"14-03-2008",attendance:"NULL",className:"B2",image:"https://i.ibb.co/w3PtH6s/38-jpg-1.jpg"},
+{no:"13",name:"MOHAMMED NAFIH O",cadetNo:"KL2025SDIA3211206",rank:"Cadet",phone:"9745452954",father:"NISHAD O",mother:"ARIFA V",blood:"O+",dob:"15-10-2008",attendance:"NULL",className:"B2",image:"https://i.ibb.co/bgTCDkNt/1-2.jpg"},
+{no:"14",name:"MOHAMMED SINAN PK",cadetNo:"KL2025SDIA3211207",rank:"Cadet",phone:"9961669073",father:"HUSSAIN PK",mother:"HAJARU CK",blood:"B+",dob:"22-08-2008",attendance:"NULL",className:"A2",image:"https://i.ibb.co/XkS3vNyL/39-jpg.jpg"},
+{no:"15",name:"ABDUL BASITH K",cadetNo:"KL2025SDIA3211208",rank:"Cadet",phone:"9048190494",father:"MOHAMMED BASHEER KORAMBI",mother:"SANEERA MK",blood:"B+",dob:"09-02-2009",attendance:"NULL",className:"C2",image:"https://i.ibb.co/RG0wynM3/35-JPG.jpg"},
+{no:"16",name:"MUHAMMED THANSEEH K",cadetNo:"KL2025SDIA3211260",rank:"Cadet",phone:"8590102357",father:"KABEER K",mother:"FATHIMA SUHARA T",blood:"O-",dob:"14-10-2009",attendance:"NULL",className:"B2",image:""},
+{no:"17",name:"MUHAMMED NASHIF E",cadetNo:"KL2025SDIA3211324",rank:"Cadet",phone:"8089042407",father:"NAVAS E",mother:"HAFSATH . K",blood:"O+",dob:"06-09-2008",attendance:"NULL",className:"B2",image:"https://i.ibb.co/W4JtQxjq/40-jpg.jpg"},
+{no:"18",name:"MUHAMMED SHIJAS P",cadetNo:"KL2025SDIA3211325",rank:"Cadet",phone:"9809346736",father:"NOUSHAD",mother:"SABILA",blood:"A+",dob:"05-08-2008",attendance:"NULL",className:"D2",image:"https://i.ibb.co/WvHdBCXx/1-26-jpg.jpg"},
+{no:"19",name:"MUHAMMED SALMAN PT",cadetNo:"KL2025SDIA3211326",rank:"Cadet",phone:"9605385831",father:"ABDUL JALEEL PT",mother:"JASEELA PT",blood:"A+",dob:"27-09-2008",attendance:"NULL",className:"C2",image:"https://i.ibb.co/8nNb1Mxq/32-JPG.jpg"},
+{no:"20",name:"MUHAMMED FARSIN C",cadetNo:"KL2025SDIA3211327",rank:"Cadet",phone:"9947443212",father:"MUHAMMED FAISAL C",mother:"SIFANATH M",blood:"B+",dob:"28-01-2009",attendance:"NULL",className:"D2",image:"https://i.ibb.co/Jw6G3Kgb/1-25-jpg.jpg"},
+{no:"21",name:"SHAHAN KP",cadetNo:"KL2025SDIA3211333",rank:"Cadet",phone:"9747328453",father:"SHIHABUDHEEN KP",mother:"NASEEMA PC",blood:"B+",dob:"06-05-2008",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/9HpD0PrH/36.jpg"},
+{no:"22",name:"MUHAMMED SHIBIN MOIDHU M",cadetNo:"KL2025SDIA3211334",rank:"Cadet",phone:"6282107008",father:"MUHAMMED MUSTHAFA M",mother:"RUKSHANA TK",blood:"A+",dob:"05-02-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/WvrHQg77/your-image.jpg"},
+{no:"23",name:"MUHAMMED SINAN K",cadetNo:"KL2025SDIA3211335",rank:"Cadet",phone:"7736031664",father:"RAFEEQUE K",mother:"NASEEMA",blood:"A+",dob:"02-01-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/s9P9jzzZ/Whats-App-Image-2026-10-02-at-11-22-22-AM.jpg"},
+{no:"24",name:"HANANA.P",cadetNo:"KL2025SWIA3211184",rank:"Cadet",phone:"9947316506",father:"ASHARAF ALI",mother:"ASMABI",blood:"A+",dob:"29-03-2009",attendance:"NULL",className:"A2",image:"https://i.ibb.co/C3zYC35H/1-20-jpg.jpg"},
+{no:"25",name:"FATHIMA HAMNA M",cadetNo:"KL2025SWIA3211185",rank:"Cadet",phone:"7558921313",father:"ABDUL HAKKEEM M",mother:"SHAJEELA K",blood:"A+",dob:"28-02-2009",attendance:"NULL",className:"",image:"https://i.ibb.co/MD68xzNG/1-12-jpg.jpg"},
+{no:"26",name:"RISHA K P",cadetNo:"KL2025SWIA3211186",rank:"Cadet",phone:"8137943920",father:"SHAMEER BABU",mother:"RAMSHEELA",blood:"O+",dob:"21-01-2009",attendance:"NULL",className:"",image:""},
+{no:"27",name:"SAFA MUFEEDA OK",cadetNo:"KL2025SWIA3211187",rank:"Cadet",phone:"8943821457",father:"ABDUL MAJEED OK",mother:"HASEENA K",blood:"A+",dob:"13-03-2009",attendance:"NULL",className:"B2",image:"https://i.ibb.co/dJWTBQTh/1-10-jpg.jpg"},
+{no:"28",name:"FATHIMA DILSHA T. K",cadetNo:"KL2025SWIA3211188",rank:"Cadet",phone:"7012472252",father:"ABOOTHAHIR T K",mother:"SAMEERA",blood:"O+",dob:"20-01-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/Vcr1KLBT/1-23-jpg.jpg"},
+{no:"29",name:"SHALBIYA SHIRIN P",cadetNo:"KL2025SWIA3211189",rank:"Cadet",phone:"8086244179",father:"HAMZA P",mother:"FOUSIYA K",blood:"B+",dob:"29-07-2008",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/8gB8PGjf/1-21-jpg.jpg"},
+{no:"30",name:"FATHIMATH RINSHA. E. K",cadetNo:"KL2025SWIA3211190",rank:"Cadet",phone:"9747752291",father:"MUHAMMED RIYAS E K",mother:"RABIYA T",blood:"B+",dob:"13-02-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/V0Hc2925/1-22-jpg.jpg"},
+{no:"31",name:"FATHIMA HASNA S",cadetNo:"KL2025SWIA3211191",rank:"Cadet",phone:"8590511733",father:"MUHAMMED KUTTY",mother:"AYISHAMOL P T",blood:"B+",dob:"13-06-2007",attendance:"NULL",className:"",image:"https://i.ibb.co/mF1d4x2V/1-15-jpg.jpg"},
+{no:"32",name:"SHIFA FATHIMA O",cadetNo:"KL2025SWIA3211192",rank:"Cadet",phone:"7902327418",father:"GAFOOR O",mother:"JAMSHEERA K",blood:"B+",dob:"25-01-2009",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/tp7gxDSC/1-11-jpg.jpg"},
+{no:"33",name:"FIDHA K",cadetNo:"KL2025SWIA3211193",rank:"Cadet",phone:"7025590463",father:"HARIS K",mother:"NUSRIYA P",blood:"O+",dob:"27-03-2010",attendance:"NULL",className:"",image:"https://i.ibb.co/HTZKR15T/1-14-jpg.jpg"},
+{no:"34",name:"DEVIKA GIRISH",cadetNo:"KL2025SWIA3211328",rank:"Cadet",phone:"6235041079",father:"GIRISH BALAKRISHNAN",mother:"SALINI GIRISH",blood:"A+",dob:"16-10-2009",attendance:"NULL",className:"",image:"https://i.ibb.co/QFvh0xjv/37-JPG.jpg"},
+{no:"35",name:"P AMINA ANVAR",cadetNo:"KL2025SWIA3211329",rank:"Cadet",phone:"9995562500",father:"ANVAR P",mother:"JASEENA P",blood:"B-",dob:"06-03-2009",attendance:"NULL",className:"",image:"https://i.ibb.co/bgTRZsvQ/1-8-jpg.jpg"},
+{no:"36",name:"FATHIMA RINSHA M",cadetNo:"KL2025SWIA3211330",rank:"Cadet",phone:"9747348873",father:"SIDHEEQ",mother:"RAMLATH PK",blood:"O-",dob:"05-12-2008",attendance:"NULL",className:"",image:"https://i.ibb.co/FbcrBqsH/1-9-jpg.jpg"},
+{no:"37",name:"MISNA JASMIN M",cadetNo:"KL2025SWIA3211331",rank:"Cadet",phone:"7909208914",father:"MUSTHAFA KAMAL",mother:"SHA FAZEELA K",blood:"A-",dob:"04-01-2009",attendance:"NULL",className:"A2",image:"https://i.ibb.co/5g9rXyXX/34-JPG.jpg"},
+{no:"38",name:"FATHIMA FIDHA K",cadetNo:"KL2025SWIA3211332",rank:"Cadet",phone:"9526906047",father:"MUHAMMED SHABEER K",mother:"RAMSEENA",blood:"A+",dob:"04-07-2008",attendance:"NULL",className:"",image:"https://i.ibb.co/LWbQzhL/1-18-jpg-1.jpg"},
+{no:"39",name:"FATHIMA ASNA AK",cadetNo:"KL2025SWIA3211336",rank:"Cadet",phone:"7034925544",father:"ABOOBACKER A K",mother:"HARIFA ABOOBACKER",blood:"O+",dob:"26-11-2008",attendance:"NULL",className:"CS2",image:"https://i.ibb.co/KcnkFqvb/1-13-jpg.jpg"}
+];
+
+function escapeHTML(value){
+ return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function showNoPhoto(img){
+ img.style.display="none";
+ const fallback=document.createElement("div");
+ fallback.className="empty-state";
+ fallback.style.borderRadius="0";
+ fallback.style.padding="35px 10px";
+ fallback.textContent="Photo unavailable";
+ img.replaceWith(fallback);
+}
+function displayCadets(){
+ const container=document.getElementById("cadetContainer");
+ const query=(document.getElementById("searchInput").value||"").trim().toLowerCase();
+ const filtered=secondYear.filter(c=>[c.no,c.name,c.cadetNo,c.rank,c.phone,c.father,c.mother,c.blood,c.dob,c.className].join(" ").toLowerCase().includes(query));
+ document.getElementById("cadetCount").textContent=filtered.length+" of "+secondYear.length+" cadets";
+ if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
+ container.innerHTML=filtered.map(c=>{
+ const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
+ const details=[
+ ["Cadet Number",c.cadetNo],["Rank",c.rank],["Phone Number",c.phone],
+ ["Father Name",c.father],["Mother Name",c.mother],["Blood Group",c.blood],
+ ["Date of Birth",c.dob],["Attendance",c.attendance],["Class Name",c.className||"Not added"]
+ ];
+ return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo)}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value||"Not added")}</span></div>`).join("")}</div></article>`;
+ }).join("");
+}
+function showPage(pageId,button){
+ document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===pageId));
+ document.querySelectorAll("nav button").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("searchInput").addEventListener("input",displayCadets);
+displayCadets();
+</script>
+</body>
+</html>

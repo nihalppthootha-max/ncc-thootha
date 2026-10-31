@@ -1,1334 +1,1349 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>DUHSS THOOTHA NCC Cadet Directory</title>
 <style>
-:root{--navy:#102a43;--blue:#176b87;--gold:#f2c14e;--bg:#f3f6f9;--card:#fff;--text:#172b4d;--muted:#627d98}
+:root{--navy:#102b24;--green:#176b45;--green2:#238653;--red:#b52b35;--gold:#e6b84a;--bg:#f3f6f1;--card:#fff;--text:#20352c;--muted:#65786d;--line:#dce7de}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--blue));color:white;padding:26px 16px;text-align:center}
-header h1{margin:0 0 8px;font-size:clamp(1.35rem,4vw,2rem)}
-header p{margin:0;color:#e4f1f7}
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;background:#fff;box-shadow:0 2px 8px #00000012;position:sticky;top:0;z-index:5}
-nav button{border:0;border-radius:8px;padding:10px 14px;background:#e8eef3;color:var(--navy);font-weight:700;cursor:pointer}
-nav button.active,nav button:hover{background:var(--blue);color:white}
+header{background:linear-gradient(125deg,#102b24 0%,#176b45 68%,#1e8053 100%);color:white;padding:30px 16px 27px;text-align:center;border-bottom:5px solid var(--red);position:relative;overflow:hidden}
+header:after{content:"";display:block;width:74px;height:4px;background:var(--gold);margin:17px auto 0;border-radius:9px}
+header h1{margin:0 0 8px;font-size:clamp(1.35rem,4vw,2rem);letter-spacing:.5px}
+header p{margin:0;color:#e5f1e8;font-size:.96rem}
+nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px;padding:12px 14px;background:#fff;box-shadow:0 4px 14px #102b2414;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line)}
+nav button,nav select{height:40px;border:1px solid #d6e3d8;border-radius:11px;padding:0 15px;background:#f4f8f4;color:var(--navy);font-weight:700;font-size:.91rem;cursor:pointer;outline:none}
+nav button.active,nav button:hover,nav select:focus{background:var(--green);border-color:var(--green);color:white}
+nav .year-picker{position:relative;display:inline-flex;align-items:center}
+.year-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;min-width:170px;background:#fff;padding:8px;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px #102b2425;z-index:20}
+.year-menu.open{display:grid;gap:6px}
+.year-menu button{width:100%;text-align:left;background:#f2f7f2;border-radius:8px}
+.year-menu button.selected{background:var(--green);color:#fff}
+.year-status{display:inline-block;margin:0 0 14px;padding:8px 14px;border-radius:20px;background:#e4f1e7;color:var(--green);font-weight:700;font-size:.9rem;border:1px solid #cfe3d2}
 main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .page{display:none}.page.active{display:block}
-.hero,.panel{background:var(--card);border-radius:14px;padding:24px;box-shadow:0 4px 18px #102a4310;margin-bottom:18px}
-.hero{text-align:center;background:linear-gradient(135deg,#fff,#e7f3f7)}
-.hero h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:5px 0 12px}
+.hero,.panel{background:var(--card);border-radius:16px;padding:24px;box-shadow:0 5px 20px #102b2410;margin-bottom:18px;border:1px solid #e5ece5}
+.hero{text-align:center;background:linear-gradient(135deg,#fff 0%,#edf6ee 100%);border-top:4px solid var(--gold)}
+.hero h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:5px 0 12px;color:var(--navy)}
 .hero p{line-height:1.65;color:var(--muted);max-width:750px;margin:0 auto 18px}
 .action-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.primary{background:var(--blue);color:white;border:0;border-radius:8px;padding:11px 16px;font-weight:bold;cursor:pointer}
-.secondary{background:#e8eef3;color:var(--navy);border:0;border-radius:8px;padding:11px 16px;font-weight:bold;cursor:pointer}
+.primary{background:var(--green);color:white;border:0;border-radius:10px;padding:11px 16px;font-weight:bold;cursor:pointer}
+.primary:hover{background:var(--navy)}
+.secondary{background:#f8eeee;color:var(--red);border:1px solid #f0d7d8;border-radius:10px;padding:11px 16px;font-weight:bold;cursor:pointer}
 .section-title{margin:0 0 8px;color:var(--navy)}
 .muted{color:var(--muted);line-height:1.6}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
-.stat{background:#fff;padding:18px;border-radius:12px;text-align:center;border:1px solid #e0e8ef}
-.stat strong{display:block;font-size:1.6rem;color:var(--blue);margin-bottom:5px}
+.stat{background:#fff;padding:18px;border-radius:13px;text-align:center;border:1px solid var(--line);border-bottom:3px solid var(--gold)}
+.stat strong{display:block;font-size:1.6rem;color:var(--green);margin-bottom:5px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
-#searchInput{flex:1;min-width:220px;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font-size:1rem}
+#searchInput{flex:1;min-width:220px;padding:12px;border:1px solid #cbdccf;border-radius:10px;font-size:1rem}
 #cadetCount{color:var(--muted);font-weight:700}
 .cadet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
-.cadet-card{background:white;border-radius:13px;overflow:hidden;box-shadow:0 4px 15px #102a4312;border:1px solid #e3eaf0}
-.cadet-photo{width:100%;height:230px;object-fit:cover;background:#e7edf2;display:block}
-.cadet-header{padding:14px 16px;background:#eaf4f7;border-bottom:1px solid #dbe8ed}
+.cadet-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
+.cadet-photo{width:100%;height:180px;object-fit:cover;background:#e7edf2;display:block}
+.photo-box{width:170px;height:170px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
+.photo-box img{width:100%;height:100%;object-fit:cover;display:block}
+.school-photo-box{width:100%;max-width:420px;height:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
+.school-photo-box img{width:100%;height:100%;object-fit:cover;display:block}
+.cadet-header{padding:14px 16px;background:#edf6ee;border-bottom:1px solid #dce9de;border-left:4px solid var(--green)}
 .cadet-header h3{margin:0 0 7px;color:var(--navy);font-size:1.08rem}
-.cadet-header .number{font-size:.9rem;color:var(--blue);font-weight:bold;overflow-wrap:anywhere}
+.cadet-header .number{font-size:.9rem;color:var(--green);font-weight:bold;overflow-wrap:anywhere}
 .cadet-details{padding:14px 16px}
-.detail{display:grid;grid-template-columns:112px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #edf1f5;font-size:.92rem}
+.detail{display:grid;grid-template-columns:112px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #edf1ed;font-size:.92rem}
 .detail:last-child{border-bottom:0}
-.detail b{color:#486581}.detail span{overflow-wrap:anywhere}
-.empty-state{text-align:center;border:2px dashed #bdcbd8;border-radius:12px;padding:34px 18px;background:#fff}
+.detail b{color:#486653}.detail span{overflow-wrap:anywhere}
+.empty-state{text-align:center;border:2px dashed #c3d4c6;border-radius:12px;padding:34px 18px;background:#fbfdfb}
 .empty-state .icon{font-size:2rem}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .form-grid label{display:block;font-weight:bold;font-size:.9rem;margin-bottom:6px}
-.form-grid input,.form-grid textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
+.form-grid input,.form-grid textarea{width:100%;padding:11px;border:1px solid #cbdccf;border-radius:9px;font:inherit}
 .form-grid textarea{min-height:90px;resize:vertical}
-footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem}
-@media(max-width:480px){nav{gap:6px}nav button{padding:9px 10px;font-size:.88rem}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
+footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;border-top:1px solid var(--line);background:#fff}
+@media(max-width:480px){nav{gap:6px;padding:10px 8px}nav button,nav select{padding:0 10px;font-size:.82rem;height:38px}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
+
+.category-heading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 2px;padding:12px 16px;border-radius:12px;background:linear-gradient(110deg,#e5f1e7,#f7f3e7);border-left:5px solid var(--green);color:var(--navy);font-weight:800;letter-spacing:.4px}
+.category-heading span{font-size:.84rem;font-weight:700;color:var(--muted);letter-spacing:0}
+
+.division-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.division-btn{border:1px solid #c7d8c8;border-radius:15px;padding:18px 14px;background:linear-gradient(145deg,#173f32,#246348);color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 5px 14px #102a431c;transition:transform .18s,filter .18s}
+.division-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.division-btn small{display:block;margin-top:5px;color:#f4d477;font-weight:600}
+.division-btn.active{outline:3px solid #d5a936;outline-offset:2px}
+.division-panel{display:none}.division-panel.active{display:block}
+.division-back{margin:4px 0 14px;border:0;border-radius:9px;padding:9px 14px;background:#e8efe9;color:#173f32;font-weight:700;cursor:pointer}
+@media(max-width:520px){.division-picker{gap:9px}.division-btn{padding:15px 8px;font-size:.94rem}}
 </style>
 </head>
 <body>
 <header>
-  <h1>DUHSS THOOTHA NCC CADET DIRECTORY</h1>
-  <p>28 Kerala Battalion NCC · Ottapalam</p>
+<h1>DUHSS THOOTHA NCC CADET DIRECTORY</h1>
+<p>28 Kerala Battalion NCC · Ottapalam</p>
 </header>
 <nav aria-label="Main navigation">
-  <button class="active" data-page="home" onclick="showPage('home',this)">Home</button>
-  <button data-page="firstYear" onclick="showPage('firstYear',this)">First Year</button>
-  <button data-page="secondYear" onclick="showPage('secondYear',this)">Second Year</button>
-  <button data-page="ano" onclick="showPage('ano',this)">ANO Details</button>
-  <button data-page="about" onclick="showPage('about',this)">About Institution</button>
+<button class="active" data-page="home" onclick="showPage('home',this)">⌂ Home</button>
+<div class="year-picker">
+<button aria-expanded="false" id="yearToggle" onclick="toggleYearMenu()" type="button">Academic Year ▾</button>
+<div aria-label="Choose academic year" class="year-menu" id="yearMenu">
+<button data-year="2025-26" onclick="selectYear('2025-26')" type="button">2025–26</button>
+<button class="selected" data-year="2026-27" onclick="selectYear('2026-27')" type="button">2026–27</button>
+<button data-year="2027-28" onclick="selectYear('2027-28')" type="button">2027–28</button>
+</div>
+</div>
+<select aria-label="Cadet directory" id="directoryMenu" onchange="if(this.value){showPage(this.value);this.value=''}">
+<option value="">Cadet Directory ▾</option>
+<option value="firstYear">First Year</option>
+<option value="secondYear">Second Year</option>
+</select>
+<select aria-label="More information" id="infoMenu" onchange="if(this.value){showPage(this.value);this.value=''}">
+<option value="">More Information ▾</option>
+<option value="ano">ANO Details</option>
+<option value="about">About Institution</option>
+<option value="contact">Admin &amp; Contact</option>
+</select>
 </nav>
 <main>
-  <section id="home" class="page active">
-    <div class="hero">
-      <p><strong>NATIONAL CADET CORPS</strong></p>
-      <h2>Welcome to the NCC Cadet Directory</h2>
-      <p>DUHSS THOOTHA NCC unit directory. Use this website to browse the year-wise cadet list, search cadet records, and view institution and ANO information.</p>
-      <div class="action-row">
-        <button class="primary" onclick="showPage('firstYear')">Open First Year</button>
-        <button class="primary" onclick="showPage('secondYear')">Open Second Year</button>
-        <button class="secondary" onclick="showPage('ano')">ANO Details</button>
-      </div>
-    </div>
-    <div class="stats">
-      <div class="stat"><strong>39</strong>Second Year records</div>
-      <div class="stat"><strong>65</strong>First Year records</div>
-      <div class="stat"><strong>28 K BN</strong>NCC Battalion</div>
-    </div>
-    <div class="panel" style="margin-top:18px">
-      <h2 class="section-title">Directory guide</h2>
-      <p class="muted">Choose <b>First Year</b> to view the 65 cadet profiles, or choose <b>Second Year</b> to browse the existing 39 records. Use the search field to filter Second Year cadets by name, cadet number, class, or rank.</p>
-    </div>
-  </section>
-
-  <section id="firstYear" class="page">
-    <div class="panel">
-      <h2 class="section-title">First Year Cadets</h2>
-      <p class="muted">First Year cadet profiles. Names are added; photo and other details spaces are kept for later.</p>
-      <div id="firstYearContainer" class="cadet-grid">
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>01 · S0MIR CHARAH</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>02 · MOHAMMED NAHAL C P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>03 · MOHAMMED SHAMEEL M P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>04 · MUHAMMED SHAHALAD KK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>05 · ABDULLA SHA ALAN P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>06 · MUHAMMED ANAS PT</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>07 · ABHINAV C</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>08 · AHSAN AHAMMED K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>09 · MUHAMMED AMAAN P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>10 · SAMSEER JASIM P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>11 · MUHAMMED MUHSIN C</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>12 · MUHAMMED ALAN O</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>13 · NISSAM MUHAMMED JASSIL CP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>14 · ADIL MUHAMMED T</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>15 · MUHAMMED MISHAL K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>16 · MUHAMMED ABDULLA P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>17 · ADWAITH S</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>18 · MUHAMMED AIMAN P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>19 · MUHAMMED SAHAL NP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>20 · MUHAMMED ZAMIN KK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>21 · MUHAMMED ANSIL K T</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>22 · ABDUL HASEEB C K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>23 · MUHAMMED HISHAM M</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>24 · MUHAMMED AJMAL P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>25 · MUHAMMED ANSAF CH</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>26 · MOHAMMED SHAMMAS PT</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>27 · MUHAMMED SHIFIN KP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>28 · MUHAMMED NASHVAN KP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>29 · MOHAMMED FARHAN V</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>30 · MUHAMMED IRSHAD KP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>31 · MUHAMMED FARSIN TK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>32 · MOHAMMED RAZAL KV</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>33 · MOHAMMED SHIFIN SHAN PK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>34 · FATHIMA SANHA OK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>35 · FATHIMA AFNA T</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>36 · FATHIMA NAJILA KT</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>37 · SHAHMA SHAMEER P K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>38 · SREESHMA KM</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>39 · AYISHA MINHA M</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>40 · FATHIMA ANSHIDA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>41 · LIYYA FATHIMA EP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>42 · FATHIMA DILSHA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>43 · NIYA FATHIMA M</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>44 · AJ SRINIDHI</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>45 · FATHIMA NASRIN K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>46 · FATHIMA SHIDA C</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>47 · FATHIMATHUL ASHIFA CP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>48 · FATHIMA BINSHA P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>49 · AYSHA WAFA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>50 · HANNA FATHIMA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>51 · FATHIMA RIYA N</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>52 · AMEYA SASIDHARAN CP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>53 · NAHAL FATHIMA TK</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>54 · NIRANJANADAS K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>55 · NAFLA FATHIMA P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>56 · HANIYA SHERIN P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>57 · NADHA FATHIMA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>58 · FATHIMA ASHNA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>59 · FATHIMA RASHA</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>60 · SHILNA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>61 · SHIYA K</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>62 · RIYA FATHIMA M</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>63 · ANANYA O</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>64 · ASWATHI P</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-        <article class="cadet-card">
-          <div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
-          <div class="cadet-header">
-            <h3>65 · FATHIMA SAFA PP</h3>
-            <div class="number">[Cadet Number]</div>
-          </div>
-          <div class="cadet-details">
-            <div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
-            <div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
-            <div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
-            <div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
-            <div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
-            <div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
-            <div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
-            <div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
-            <div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="secondYear" class="page">
-    <div class="panel">
-      <h2 class="section-title">Second Year Cadets</h2>
-      <p class="muted">Browse the registered Second Year cadets. Some records do not yet have a photo or class entry.</p>
-      <div class="toolbar">
-        <input id="searchInput" type="search" placeholder="Search by name, cadet number, rank, or class..." aria-label="Search Second Year cadets">
-        <span id="cadetCount">39 cadets</span>
-      </div>
-      <div id="cadetContainer" class="cadet-grid"></div>
-    </div>
-  </section>
-
-  <section id="ano" class="page">
-    <div class="panel">
-      <h2 class="section-title">Associate NCC Officer (ANO) Details</h2>
-      <p class="muted">These details are displayed as read-only information. Edit the HTML code to update them.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start">
-        <div style="background:#eaf4f7;border-radius:12px;padding:18px;text-align:center">
-          <div class="photo-box">
-            <img src="https://i.ibb.co/Q3txR7Wf/IMG-20261026-WA0029.jpg" alt="ANO Photo" onerror="this.parentElement.textContent='Photo space'">
-          </div>
-          <h3 style="margin:8px 0">ABDUL HAKEEM</h3>
-          <p style="margin:0;color:#176b87;font-weight:bold">CTO</p>
-        </div>
-        <div>
-          <div class="detail"><b>Name</b><span>ABDUL HAKEEM</span></div>
-          <div class="detail"><b>Rank</b><span>CTO</span></div>
-          <div class="detail"><b>Address</b><span>THOOTHA THEKKEPPURAM 679357 Malaikathodi house vazhenkada po</span></div>
-          <div class="detail"><b>Unit</b><span>28 KERALA BN OTTAPALAM</span></div>
-          <div class="detail"><b>Phone Number</b><span>9605688025</span></div>
-          <div class="detail"><b>Date of Birth</b><span>07-05-1996</span></div>
-          <div class="detail"><b>Blood Group</b><span>A+ve</span></div>
-        </div>
-      </div>
-      <p class="muted" style="margin-top:16px">Visitors cannot edit these fields on the website. Open the HTML file in a code editor to update them.</p>
-    </div>
-  </section>
-
-  <section id="about" class="page">
-    <div class="panel">
-      <h2 class="section-title">About Institution</h2>
-      <p class="muted">DUHSS THOOTHA institution profile and NCC cadet strength.</p>
-      <div style="margin:18px 0 22px;background:#eaf4f7;border-radius:14px;padding:16px;text-align:center">
-        <div class="school-photo-box">
-          <img src="https://i.ibb.co/C3k0DRxp/darul-uloom-higher-secondary-school-thootha-malappuram-secondary-schools-uuzfkdpy50-250.jpg" alt="School building photo" onerror="this.parentElement.textContent='Large School Photo Space'">
-        </div>
-      </div>
-      <div class="detail"><b>Institution Name</b><span>DUHSS THOOTHA</span></div>
-      <div class="detail"><b>Pincode</b><span>679357</span></div>
-      <div class="detail"><b>Principal</b><span>KK RAHMATHULLA</span></div>
-      <h3 style="margin-top:24px;color:#102a43">NCC Cadet Strength</h3>
-      <div class="stats">
-        <div class="stat"><strong>33</strong>First Year SD</div>
-        <div class="stat"><strong>32</strong>First Year SW</div>
-        <div class="stat"><strong>23</strong>Second Year SD</div>
-        <div class="stat"><strong>16</strong>Second Year SW</div>
-      </div>
-      <h3 style="margin-top:24px;color:#102a43">About NCC</h3>
-      <p class="muted">The National Cadet Corps (NCC) is a youth organisation that encourages discipline, leadership, teamwork, responsibility, and service to the community.</p>
-    </div>
-  </section>
+<section class="page active" id="home">
+<div style="text-align:center"><span class="year-status" id="yearStatus">Selected Academic Year: 2026–27</span></div>
+<div class="hero">
+<p><strong>NATIONAL CADET CORPS</strong></p>
+<h2>Welcome to the NCC Cadet Directory</h2>
+<p>DUHSS THOOTHA NCC unit directory. Use this website to browse the year-wise cadet list, search cadet records, and view institution and ANO information.</p>
+<p style="margin:0 auto;color:var(--green);font-weight:700">Choose your academic year and open the section from the navigation above.</p>
+</div>
+<div class="stats">
+<div class="stat"><strong>39</strong>Second Year records</div>
+<div class="stat"><strong>65</strong>First Year records</div>
+<div class="stat"><strong>28 K BN</strong>NCC Battalion</div>
+</div>
+<div class="panel" style="margin-top:18px">
+<h2 class="section-title">Directory guide</h2>
+<p class="muted">Choose <b>First Year</b> to view the 65 cadet profiles, or choose <b>Second Year</b> to browse the existing 39 records. Use the search field to filter Second Year cadets by name, cadet number, class, or rank.</p>
+</div>
+</section>
+<section class="page" id="firstYear">
+<div class="panel">
+<h2 class="section-title">First Year Cadets</h2>
+<p class="muted">Select SD or SW to view the cadet profiles. SD includes serial numbers 01–33; SW includes 34–65.</p>
+<div class="cadet-grid" id="firstYearContainer"><div class="division-picker" id="firstDivisionPicker"><button class="division-btn" onclick="showDivision('first','SD')" type="button">SD</button><button class="division-btn" onclick="showDivision('first','SW')" type="button">SW</button></div><div class="division-panel" id="firstSDPanel"><button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button><div class="cadet-grid"><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>01 · S0MIR CHARAH</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>02 · MOHAMMED NAHAL C P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>03 · MOHAMMED SHAMEEL M P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>04 · MUHAMMED SHAHALAD KK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>05 · ABDULLA SHA ALAN P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>06 · MUHAMMED ANAS PT</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>07 · ABHINAV C</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>08 · AHSAN AHAMMED K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>09 · MUHAMMED AMAAN P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>10 · SAMSEER JASIM P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>11 · MUHAMMED MUHSIN C</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>12 · MUHAMMED ALAN O</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>13 · NISSAM MUHAMMED JASSIL CP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>14 · ADIL MUHAMMED T</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>15 · MUHAMMED MISHAL K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>16 · MUHAMMED ABDULLA P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>17 · ADWAITH S</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>18 · MUHAMMED AIMAN P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>19 · MUHAMMED SAHAL NP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>20 · MUHAMMED ZAMIN KK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>21 · MUHAMMED ANSIL K T</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>22 · ABDUL HASEEB C K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>23 · MUHAMMED HISHAM M</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>24 · MUHAMMED AJMAL P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>25 · MUHAMMED ANSAF CH</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>26 · MOHAMMED SHAMMAS PT</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>27 · MUHAMMED SHIFIN KP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>28 · MUHAMMED NASHVAN KP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>29 · MOHAMMED FARHAN V</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>30 · MUHAMMED IRSHAD KP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>31 · MUHAMMED FARSIN TK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>32 · MOHAMMED RAZAL KV</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>33 · MOHAMMED SHIFIN SHAN PK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article></div></div><div class="division-panel" id="firstSWPanel"><button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button><div class="cadet-grid"><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>34 · FATHIMA SANHA OK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>35 · FATHIMA AFNA T</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>36 · FATHIMA NAJILA KT</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>37 · SHAHMA SHAMEER P K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>38 · SREESHMA KM</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>39 · AYISHA MINHA M</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>40 · FATHIMA ANSHIDA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>41 · LIYYA FATHIMA EP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>42 · FATHIMA DILSHA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>43 · NIYA FATHIMA M</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>44 · AJ SRINIDHI</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>45 · FATHIMA NASRIN K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>46 · FATHIMA SHIDA C</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>47 · FATHIMATHUL ASHIFA CP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>48 · FATHIMA BINSHA P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>49 · AYSHA WAFA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>50 · HANNA FATHIMA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>51 · FATHIMA RIYA N</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>52 · AMEYA SASIDHARAN CP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>53 · NAHAL FATHIMA TK</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>54 · NIRANJANADAS K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>55 · NAFLA FATHIMA P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>56 · HANIYA SHERIN P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>57 · NADHA FATHIMA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>58 · FATHIMA ASHNA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>59 · FATHIMA RASHA</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>60 · SHILNA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>61 · SHIYA K</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>62 · RIYA FATHIMA M</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>63 · ANANYA O</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>64 · ASWATHI P</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article><article class="cadet-card">
+<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>
+<div class="cadet-header">
+<h3>65 · FATHIMA SAFA PP</h3>
+<div class="number">[Cadet Number]</div>
+</div>
+<div class="cadet-details">
+<div class="detail"><b>Cadet Number</b><span>[Enter cadet number]</span></div>
+<div class="detail"><b>Rank</b><span>[Enter rank]</span></div>
+<div class="detail"><b>Phone Number</b><span>[Enter phone number]</span></div>
+<div class="detail"><b>Father Name</b><span>[Enter father name]</span></div>
+<div class="detail"><b>Mother Name</b><span>[Enter mother name]</span></div>
+<div class="detail"><b>Blood Group</b><span>[Enter blood group]</span></div>
+<div class="detail"><b>Date of Birth</b><span>[Enter DOB]</span></div>
+<div class="detail"><b>Attendance</b><span>[Enter attendance]</span></div>
+<div class="detail"><b>Class Name</b><span>[Enter class]</span></div>
+</div>
+</article></div></div></div>
+</div>
+</section>
+<section class="page" id="secondYear">
+<div class="panel">
+<h2 class="section-title">Second Year Cadets</h2>
+<p class="muted">Second Year cadets are organised into SD (01–23) and SW (24–39). Search by name, cadet number, rank, class, or division.</p>
+</div>
+<div class="division-picker" id="secondDivisionPicker"><button class="division-btn" onclick="showDivision('second','SD')" type="button">SD</button><button class="division-btn" onclick="showDivision('second','SW')" type="button">SW</button></div><div class="division-panel" id="secondSDPanel"><button class="division-back" onclick="backToDivisions('second')" type="button">← Back to SD / SW</button><div class="toolbar">
+<input aria-label="Search Second Year SD cadets" id="searchInputSD" placeholder="Search by name, cadet number, rank, or class..." type="search"/>
+<span id="cadetCountSD">39 cadets</span>
+</div><div class="cadet-grid" id="cadetContainerSD"></div></div><div class="division-panel" id="secondSWPanel"><button class="division-back" onclick="backToDivisions('second')" type="button">← Back to SD / SW</button><div class="toolbar">
+<input aria-label="Search Second Year SW cadets" id="searchInputSW" placeholder="Search by name, cadet number, rank, or class..." type="search"/>
+<span id="cadetCountSW">39 cadets</span>
+</div><div class="cadet-grid" id="cadetContainerSW"></div></div></section>
+<section class="page" id="previousYear">
+<div class="panel">
+<h2 class="section-title">Academic Year 2025–26</h2>
+<div class="empty-state">
+<div class="icon">📁</div>
+<h3>Previous Year Archive</h3>
+<p class="muted">This is the previous academic year. Archive details have not been added yet.</p>
+</div>
+</div>
+</section>
+<section class="page" id="upcomingYear">
+<div class="panel">
+<h2 class="section-title">Academic Year 2027–28</h2>
+<div class="empty-state">
+<div class="icon">📅</div>
+<h3>Upcoming Academic Year</h3>
+<p class="muted">The 2027–28 NCC cadet directory will be available here when the new academic year begins.</p>
+</div>
+</div>
+</section>
+<section class="page" id="ano">
+<div class="panel">
+<h2 class="section-title">Associate NCC Officer (ANO) Details</h2>
+<p class="muted">These details are displayed as read-only information. Edit the HTML code to update them.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start">
+<div style="background:#eaf4f7;border-radius:12px;padding:18px;text-align:center">
+<div class="photo-box">
+<img alt="ANO Photo" onerror="this.parentElement.textContent='Photo space'" src="https://i.ibb.co/Q3txR7Wf/IMG-20261026-WA0029.jpg"/>
+</div>
+<h3 style="margin:8px 0">ABDUL HAKEEM</h3>
+<p style="margin:0;color:#176b87;font-weight:bold">CTO</p>
+</div>
+<div>
+<div class="detail"><b>Name</b><span>ABDUL HAKEEM</span></div>
+<div class="detail"><b>Rank</b><span>CTO</span></div>
+<div class="detail"><b>Address</b><span>THOOTHA THEKKEPPURAM 679357 Malaikathodi house vazhenkada po</span></div>
+<div class="detail"><b>Unit</b><span>28 KERALA BN OTTAPALAM</span></div>
+<div class="detail"><b>Phone Number</b><span>9605688025</span></div>
+<div class="detail"><b>Date of Birth</b><span>07-05-1996</span></div>
+<div class="detail"><b>Blood Group</b><span>A+ve</span></div>
+</div>
+</div>
+<p class="muted" style="margin-top:16px">Visitors cannot edit these fields on the website. Open the HTML file in a code editor to update them.</p>
+</div>
+</section>
+<section class="page" id="contact">
+<div class="panel">
+<h2 class="section-title">Admin Information</h2>
+<p class="muted">For website corrections, NCC directory updates, or other enquiries, contact the website admin.</p>
+<div class="detail"><b>Admin</b><span>Website Administrator</span></div>
+<div class="detail"><b>Email</b><span><a href="mailto:nihalppthootha@gmail.com">nihalppthootha@gmail.com</a></span></div>
+<div class="detail"><b>WhatsApp / Phone</b><span><a href="https://wa.me/916282579898" rel="noopener" target="_blank">+91 62825 79898</a></span></div>
+</div>
+<div class="panel">
+<h2 class="section-title">Write to Admin</h2>
+<p class="muted">Write your message below and choose WhatsApp or Email to send it to the admin.</p>
+<form class="form-grid" id="adminMessageForm">
+<div style="grid-column:1/-1">
+<label for="visitorName">Your Name</label>
+<input id="visitorName" maxlength="80" name="visitorName" placeholder="Enter your name" required="" type="text"/>
+</div>
+<div style="grid-column:1/-1">
+<label for="visitorMessage">Your Message</label>
+<textarea id="visitorMessage" maxlength="2000" name="visitorMessage" placeholder="Type your message here..." required=""></textarea>
+</div>
+<div class="action-row" style="grid-column:1/-1;justify-content:flex-start">
+<button class="primary" onclick="sendAdminMessage('whatsapp')" type="button">Send by WhatsApp</button>
+<button class="secondary" onclick="sendAdminMessage('email')" type="button">Send by Email</button>
+</div>
+</form>
+<p class="muted" style="margin-top:12px;font-size:.88rem">Note: Your messaging app or email app will open with the message ready. You must press Send there. Messages are not stored on this website.</p>
+</div>
+</section>
+<section class="page" id="about">
+<div class="panel">
+<h2 class="section-title">About Institution</h2>
+<p class="muted">DUHSS THOOTHA institution profile and NCC cadet strength.</p>
+<div style="margin:18px 0 22px;background:#eaf4f7;border-radius:14px;padding:16px;text-align:center">
+<div class="school-photo-box">
+<img alt="School building photo" onerror="this.parentElement.textContent='Large School Photo Space'" src="https://i.ibb.co/C3k0DRxp/darul-uloom-higher-secondary-school-thootha-malappuram-secondary-schools-uuzfkdpy50-250.jpg"/>
+</div>
+</div>
+<div class="detail"><b>Institution Name</b><span>DUHSS THOOTHA</span></div>
+<div class="detail"><b>Pincode</b><span>679357</span></div>
+<div class="detail"><b>Principal</b><span>KK RAHMATHULLA</span></div>
+<h3 style="margin-top:24px;color:#102a43">NCC Cadet Strength</h3>
+<div class="stats">
+<div class="stat"><strong>33</strong>First Year SD</div>
+<div class="stat"><strong>32</strong>First Year SW</div>
+<div class="stat"><strong>23</strong>Second Year SD</div>
+<div class="stat"><strong>16</strong>Second Year SW</div>
+</div>
+<h3 style="margin-top:24px;color:#102a43">About NCC</h3>
+<p class="muted">The National Cadet Corps (NCC) is a youth organisation that encourages discipline, leadership, teamwork, responsibility, and service to the community.</p>
+</div>
+</section>
 </main>
 <footer>DUHSS THOOTHA NCC Cadet Directory · 28 Kerala Battalion NCC, Ottapalam</footer>
-
 <script>
 const secondYear = [
 {no:"01",name:"MUHAMMED FAHEEM.",cadetNo:"KL2025SDIA3211194",rank:"Cadet",phone:"9847831460",father:"ABDUL KAREEM K",mother:"REJEENA M",blood:"AB+",dob:"24-11-2008",attendance:"NULL",className:"B2",image:"image/faheem.jpeg"},
@@ -1384,29 +1399,81 @@ function showNoPhoto(img){
  fallback.textContent="Photo unavailable";
  img.replaceWith(fallback);
 }
-function displayCadets(){
- const container=document.getElementById("cadetContainer");
- const query=(document.getElementById("searchInput").value||"").trim().toLowerCase();
- const filtered=secondYear.filter(c=>[c.no,c.name,c.cadetNo,c.rank,c.phone,c.father,c.mother,c.blood,c.dob,c.className].join(" ").toLowerCase().includes(query));
- document.getElementById("cadetCount").textContent=filtered.length+" of "+secondYear.length+" cadets";
+function displayCadets(division){
+ const container=document.getElementById("cadetContainer"+division);
+ const query=(document.getElementById("searchInput"+division).value||"").trim().toLowerCase();
+ const records=secondYear.map((c,index)=>({...c,division:index<23?"SD":"SW"})).filter(c=>c.division===division);
+ const filtered=records.filter(c=>[c.no,c.name,c.cadetNo,c.rank,c.phone,c.father,c.mother,c.blood,c.dob,c.className,c.division].join(" ").toLowerCase().includes(query));
+ document.getElementById("cadetCount"+division).textContent=filtered.length+" of "+records.length+" cadets";
  if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
  container.innerHTML=filtered.map(c=>{
  const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
- const details=[
- ["Cadet Number",c.cadetNo],["Rank",c.rank],["Phone Number",c.phone],
- ["Father Name",c.father],["Mother Name",c.mother],["Blood Group",c.blood],
- ["Date of Birth",c.dob],["Attendance",c.attendance],["Class Name",c.className||"Not added"]
- ];
+ const details=[["Cadet Number",c.cadetNo],["Division",c.division],["Rank",c.rank],["Phone Number",c.phone],["Father Name",c.father],["Mother Name",c.mother],["Blood Group",c.blood],["Date of Birth",c.dob],["Attendance",c.attendance],["Class Name",c.className||"Not added"]];
  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo)}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value||"Not added")}</span></div>`).join("")}</div></article>`;
  }).join("");
 }
+function showDivision(year,division){
+ const prefix=year==='first'?'first':'second';
+ document.getElementById(prefix+'DivisionPicker').style.display='none';
+ document.querySelectorAll('#'+prefix+'Year .division-panel').forEach(p=>p.classList.remove('active'));
+ document.getElementById(prefix+division+'Panel').classList.add('active');
+ if(year==='second') displayCadets(division);
+}
+function backToDivisions(year){
+ const prefix=year==='first'?'first':'second';
+ document.querySelectorAll('#'+prefix+'Year .division-panel').forEach(p=>p.classList.remove('active'));
+ document.getElementById(prefix+'DivisionPicker').style.display='grid';
+}
+
+function sendAdminMessage(method){
+ const name=document.getElementById("visitorName").value.trim();
+ const message=document.getElementById("visitorMessage").value.trim();
+ if(!name || !message){
+  alert("Please enter your name and message first.");
+  return;
+ }
+ const body="Message from DUHSS THOOTHA NCC website\nName: "+name+"\n\nMessage: "+message;
+ if(method==="whatsapp"){
+  const url="https://wa.me/916282579898?text="+encodeURIComponent(body);
+  window.open(url,"_blank","noopener,noreferrer");
+ }else{
+  const url="mailto:nihalppthootha@gmail.com?subject="+encodeURIComponent("Message from NCC website")+"&body="+encodeURIComponent(body);
+  window.location.href=url;
+ }
+}
+let selectedAcademicYear="2026-27";
+function toggleYearMenu(){
+ const menu=document.getElementById("yearMenu");
+ const isOpen=menu.classList.toggle("open");
+ document.getElementById("yearToggle").setAttribute("aria-expanded",String(isOpen));
+}
+function selectYear(year){
+ selectedAcademicYear=year;
+ const menu=document.getElementById("yearMenu");
+ menu.classList.remove("open");
+ document.getElementById("yearToggle").setAttribute("aria-expanded","false");
+ document.querySelectorAll(".year-menu button").forEach(btn=>btn.classList.toggle("selected",btn.dataset.year===year));
+ document.getElementById("yearStatus").textContent="Selected Academic Year: "+year.replace("-","–");
+ const directory=document.getElementById("directoryMenu");
+ directory.disabled=year!=="2026-27";
+ directory.style.opacity=year!=="2026-27"?".55":"1";
+ if(year==="2025-26") showPage("previousYear");
+ else if(year==="2027-28") showPage("upcomingYear");
+ else showPage("home");
+}
 function showPage(pageId,button){
+ if((pageId==="firstYear"||pageId==="secondYear")&&selectedAcademicYear!=="2026-27"){
+  alert("First Year and Second Year details are available under academic year 2026–27.");
+  return;
+ }
  document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===pageId));
- document.querySelectorAll("nav button").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
+ document.querySelectorAll("nav button[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
+ if(pageId!=="firstYear"&&pageId!=="secondYear") document.getElementById("directoryMenu").value="";
+ if(pageId!=="ano"&&pageId!=="about"&&pageId!=="contact") document.getElementById("infoMenu").value="";
  window.scrollTo({top:0,behavior:"smooth"});
 }
-document.getElementById("searchInput").addEventListener("input",displayCadets);
-displayCadets();
+document.getElementById("searchInputSD").addEventListener("input",()=>displayCadets("SD"));
+document.getElementById("searchInputSW").addEventListener("input",()=>displayCadets("SW"));
 </script>
 </body>
 </html>

@@ -40,9 +40,9 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
 #searchInput{flex:1;min-width:220px;padding:12px;border:1px solid #cbdccf;border-radius:10px;font-size:1rem}
 #cadetCount{color:var(--muted);font-weight:700}
-.cadet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
-.cadet-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
-.cadet-photo{width:100%;height:180px;object-fit:cover;background:#e7edf2;display:block}
+.cadet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.cadet-card{min-width:0;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
+.cadet-photo{width:100%;height:250px;object-fit:contain;object-position:center;background:#e7edf2;display:block}
 .photo-box{width:170px;height:170px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
 .photo-box img{width:100%;height:100%;object-fit:cover;display:block}
 .school-photo-box{width:100%;max-width:420px;height:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
@@ -61,6 +61,8 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .form-grid input,.form-grid textarea{width:100%;padding:11px;border:1px solid #cbdccf;border-radius:9px;font:inherit}
 .form-grid textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;border-top:1px solid var(--line);background:#fff}
+@media(max-width:850px){.cadet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cadet-grid{grid-template-columns:1fr}.cadet-photo{height:260px}}
 @media(max-width:480px){nav{gap:6px;padding:10px 8px}nav button,nav select{padding:0 10px;font-size:.82rem;height:38px}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
 
 .category-heading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 2px;padding:12px 16px;border-radius:12px;background:linear-gradient(110deg,#e5f1e7,#f7f3e7);border-left:5px solid var(--green);color:var(--navy);font-weight:800;letter-spacing:.4px}

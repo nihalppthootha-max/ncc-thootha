@@ -39,9 +39,12 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
 #firstSearchInputSD, #firstSearchInputSW, #searchInputSD, #searchInputSW{flex:1;min-width:220px;padding:12px;border:1px solid #cbdccf;border-radius:10px;font-size:1rem}
 #cadetCount{color:var(--muted);font-weight:700}
-#firstYearContainer{display:block}.cadet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
-.cadet-card{min-width:0;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
-.cadet-photo{width:100%;height:250px;object-fit:contain;object-position:center;background:#e7edf2;display:block}
+#firstYearContainer{display:block}
+
+.cadet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.cadet-card{min-width:0;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1;display:flex;flex-direction:column}
+.cadet-photo{width:100%;height:280px;object-fit:cover;object-position:top center;background:#e7edf2;display:block}
+
 .photo-box{width:170px;height:170px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
 .photo-box img{width:100%;height:100%;object-fit:cover;display:block}
 .school-photo-box{width:100%;max-width:420px;height:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
@@ -49,7 +52,7 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .cadet-header{padding:14px 16px;background:#edf6ee;border-bottom:1px solid #dce9de;border-left:4px solid var(--green)}
 .cadet-header h3{margin:0 0 7px;color:var(--navy);font-size:1.08rem}
 .cadet-header .number{font-size:.9rem;color:var(--green);font-weight:bold;overflow-wrap:anywhere}
-.cadet-details{padding:14px 16px}
+.cadet-details{padding:14px 16px;flex:1}
 .detail{display:grid;grid-template-columns:112px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #edf1ed;font-size:.92rem}
 .detail:last-child{border-bottom:0}
 .detail b{color:#486653}.detail span{overflow-wrap:anywhere}
@@ -60,12 +63,10 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .form-grid input,.form-grid textarea{width:100%;padding:11px;border:1px solid #cbdccf;border-radius:9px;font:inherit}
 .form-grid textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;border-top:1px solid var(--line);background:#fff}
-@media(max-width:850px) and (min-width:561px){.cadet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.cadet-grid{grid-template-columns:1fr}.cadet-photo{height:260px}}
-@media(max-width:480px){nav{gap:6px;padding:10px 8px}nav button,nav select{padding:0 10px;font-size:.82rem;height:38px}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
 
-.category-heading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 2px;padding:12px 16px;border-radius:12px;background:linear-gradient(110deg,#e5f1e7,#f7f3e7);border-left:5px solid var(--green);color:var(--navy);font-weight:800;letter-spacing:.4px}
-.category-heading span{font-size:.84rem;font-weight:700;color:var(--muted);letter-spacing:0}
+@media(max-width:1024px) and (min-width:651px){.cadet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.cadet-grid{grid-template-columns:1fr}.cadet-photo{height:260px}}
+@media(max-width:480px){nav{gap:6px;padding:10px 8px}nav button,nav select{padding:0 10px;font-size:.82rem;height:38px}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
 
 .division-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
 .division-btn{border:1px solid #c7d8c8;border-radius:15px;padding:18px 14px;background:linear-gradient(145deg,#173f32,#246348);color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 5px 14px #102a431c;transition:transform .18s,filter .18s}
@@ -120,7 +121,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 </div>
 <div class="panel" style="margin-top:18px">
 <h2 class="section-title">Directory guide</h2>
-<p class="muted">Choose <b>First Year</b> to view the 65 cadet profiles, or choose <b>Second Year</b> to browse the existing 39 records. Use the search field to filter Second Year cadets by name, cadet number, class, or rank.</p>
+<p class="muted">Choose <b>First Year</b> to view the 65 cadet profiles, or choose <b>Second Year</b> to browse the existing 39 records. Use the search field to filter cadets by name, cadet number, class, or rank.</p>
 </div>
 </section>
 <section class="page" id="firstYear">
@@ -135,7 +136,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="division-panel" id="firstSDPanel">
 <button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button>
 <div class="toolbar">
-<input id="firstSearchInputSD" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SD cadets">
+<input id="firstSearchInputSD" type="search" placeholder="Search by name, cadet number, rank, or class..." aria-label="Search First Year SD cadets">
 <span id="firstCadetCountSD">33 cadets</span>
 </div>
 <div class="cadet-grid" id="firstCadetContainerSD"></div>
@@ -143,7 +144,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="division-panel" id="firstSWPanel">
 <button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button>
 <div class="toolbar">
-<input id="firstSearchInputSW" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SW cadets">
+<input id="firstSearchInputSW" type="search" placeholder="Search by name, cadet number, rank, or class..." aria-label="Search First Year SW cadets">
 <span id="firstCadetCountSW">32 cadets</span>
 </div>
 <div class="cadet-grid" id="firstCadetContainerSW"></div>
@@ -158,10 +159,10 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 </div>
 <div class="division-picker" id="secondDivisionPicker"><button class="division-btn" onclick="showDivision('second','SD')" type="button">SD</button><button class="division-btn" onclick="showDivision('second','SW')" type="button">SW</button></div><div class="division-panel" id="secondSDPanel"><button class="division-back" onclick="backToDivisions('second')" type="button">← Back to SD / SW</button><div class="toolbar">
 <input aria-label="Search Second Year SD cadets" id="searchInputSD" placeholder="Search by name, cadet number, rank, or class..." type="search"/>
-<span id="cadetCountSD">39 cadets</span>
+<span id="cadetCountSD">23 cadets</span>
 </div><div class="cadet-grid" id="cadetContainerSD"></div></div><div class="division-panel" id="secondSWPanel"><button class="division-back" onclick="backToDivisions('second')" type="button">← Back to SD / SW</button><div class="toolbar">
 <input aria-label="Search Second Year SW cadets" id="searchInputSW" placeholder="Search by name, cadet number, rank, or class..." type="search"/>
-<span id="cadetCountSW">39 cadets</span>
+<span id="cadetCountSW">16 cadets</span>
 </div><div class="cadet-grid" id="cadetContainerSW"></div></div></section>
 <section class="page" id="previousYear">
 <div class="panel">
@@ -205,7 +206,6 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="detail"><b>Blood Group</b><span>A+ve</span></div>
 </div>
 </div>
-<p class="muted" style="margin-top:16px">Visitors cannot edit these fields on the website. Open the HTML file in a code editor to update them.</p>
 </div>
 </section>
 <section class="page" id="contact">
@@ -233,7 +233,6 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <button class="secondary" onclick="sendAdminMessage('email')" type="button">Send by Email</button>
 </div>
 </form>
-<p class="muted" style="margin-top:12px;font-size:.88rem">Note: Your messaging app or email app will open with the message ready. You must press Send there. Messages are not stored on this website.</p>
 </div>
 </section>
 <section class="page" id="about">
@@ -255,79 +254,77 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="stat"><strong>23</strong>Second Year SD</div>
 <div class="stat"><strong>16</strong>Second Year SW</div>
 </div>
-<h3 style="margin-top:24px;color:#102a43">About NCC</h3>
-<p class="muted">The National Cadet Corps (NCC) is a youth organisation that encourages discipline, leadership, teamwork, responsibility, and service to the community.</p>
 </div>
 </section>
 </main>
 <footer>DUHSS THOOTHA NCC Cadet Directory · 28 Kerala Battalion NCC, Ottapalam</footer>
 <script>
 const firstYear = [
-{no:"01",name:"S0MIR CHARAH",division:"SD",image:"image/somir.jpeg"},
-{no:"02",name:"MOHAMMED NAHAL C P",division:"SD",image:"image/nahalcp.jpeg"},
-{no:"03",name:"MOHAMMED SHAMEEL M P",division:"SD",image:"image/shameel.jpeg"},
-{no:"04",name:"MUHAMMED SHAHALAD KK",division:"SD",image:"image/shahalad.jpeg"},
-{no:"05",name:"ABDULLA SHA ALAN P",division:"SD",image:"image/abdulla.jpeg"},
-{no:"06",name:"MUHAMMED ANAS PT",division:"SD",image:"image/anas.jpeg"},
-{no:"07",name:"ABHINAV C",division:"SD",image:"image/abhinav.jpeg"},
-{no:"08",name:"AHSAN AHAMMED K",division:"SD",image:"image/ahsan.jpeg"},
-{no:"09",name:"MUHAMMED AMAAN P",division:"SD",image:"image/amaan.jpeg"},
-{no:"10",name:"SAMSEER JASIM P",division:"SD",image:"image/samseer.jpeg"},
-{no:"11",name:"MUHAMMED MUHSIN C",division:"SD",image:"image/muhsin.jpeg"},
-{no:"12",name:"MUHAMMED ALAN O",division:"SD",image:"image/alan.jpeg"},
-{no:"13",name:"NISSAM MUHAMMED JASSIL CP",division:"SD",image:"image/nissam.jpeg"},
-{no:"14",name:"ADIL MUHAMMED T",division:"SD",image:"image/adil.jpeg"},
-{no:"15",name:"MUHAMMED MISHAL K",division:"SD",image:"image/mishal.jpeg"},
-{no:"16",name:"MUHAMMED ABDULLA P",division:"SD",image:"image/abdulla-p.jpeg"},
-{no:"17",name:"ADWAITH S",division:"SD",image:"image/adwaith.jpeg"},
-{no:"18",name:"MUHAMMED AIMAN P",division:"SD",image:"image/aiman.jpeg"},
-{no:"19",name:"MUHAMMED SAHAL NP",division:"SD",image:"image/sahal.jpeg"},
-{no:"20",name:"MUHAMMED ZAMIN KK",division:"SD",image:"image/zamin.jpeg"},
-{no:"21",name:"MUHAMMED ANSIL K T",division:"SD",image:"image/ansil.jpeg"},
-{no:"22",name:"ABDUL HASEEB C K",division:"SD",image:"image/abdul.jpeg"},
-{no:"23",name:"MUHAMMED HISHAM M",division:"SD",image:"image/hisham.jpeg"},
-{no:"24",name:"MUHAMMED AJMAL P",division:"SD",image:"image/ajmal.jpeg"},
-{no:"25",name:"MUHAMMED ANSAF CH",division:"SD",image:"image/ansaf.jpeg"},
-{no:"26",name:"MOHAMMED SHAMMAS PT",division:"SD",image:"image/shammas.jpeg"},
-{no:"27",name:"MUHAMMED SHIFIN KP",division:"SD",image:"image/shifin.jpeg"},
-{no:"28",name:"MUHAMMED NASHVAN KP",division:"SD",image:"image/nashvan.jpeg"},
-{no:"29",name:"MOHAMMED FARHAN V",division:"SD",image:"image/farhan.jpeg"},
-{no:"30",name:"MUHAMMED IRSHAD KP",division:"SD",image:"image/irshad.jpeg"},
-{no:"31",name:"MUHAMMED FARSIN TK",division:"SD",image:"image/farsintk.jpeg"},
-{no:"32",name:"MOHAMMED RAZAL KV",division:"SD",image:"image/razal.jpeg"},
-{no:"33",name:"MOHAMMED SHIFIN SHAN PK",division:"SD",image:"image/shifin-shan.jpeg"},
-{no:"34",name:"FATHIMA SANHA OK",division:"SW",image:"image/sanha.jpeg"},
-{no:"35",name:"FATHIMA AFNA T",division:"SW",image:"image/afna.jpeg"},
-{no:"36",name:"FATHIMA NAJILA KT",division:"SW",image:"image/najila.jpeg"},
-{no:"37",name:"SHAHMA SHAMEER P K",division:"SW",image:"image/shahma.jpeg"},
-{no:"38",name:"SREESHMA KM",division:"SW",image:"image/shreeshma.jpeg"},
-{no:"39",name:"AYISHA MINHA M",division:"SW",image:"image/minha.jpeg"},
-{no:"40",name:"FATHIMA ANSHIDA K",division:"SW",image:"image/anshida.jpeg"},
-{no:"41",name:"LIYYA FATHIMA EP",division:"SW",image:"image/liyya.jpeg"},
-{no:"42",name:"FATHIMA DILSHA K",division:"SW",image:"image/dilsha.jpeg"},
-{no:"43",name:"NIYA FATHIMA M",division:"SW",image:"image/niya.jpeg"},
-{no:"44",name:"AJ SRINIDHI",division:"SW",image:"image/srinidhi.jpeg"},
-{no:"45",name:"FATHIMA NASRIN K",division:"SW",image:"image/nasrin.jpeg"},
-{no:"46",name:"FATHIMA SHIDA C",division:"SW",image:"image/shida.jpeg"},
-{no:"47",name:"FATHIMATHUL ASHIFA CP",division:"SW",image:"image/ashifa.jpeg"},
-{no:"48",name:"FATHIMA BINSHA P",division:"SW",image:"image/binsha.jpeg"},
-{no:"49",name:"AYSHA WAFA K",division:"SW",image:"image/wafa.jpeg"},
-{no:"50",name:"HANNA FATHIMA K",division:"SW",image:"image/hanna.jpeg"},
-{no:"51",name:"FATHIMA RIYA N",division:"SW",image:"image/riya.jpeg"},
-{no:"52",name:"AMEYA SASIDHARAN CP",division:"SW",image:"image/ameya.jpeg"},
-{no:"53",name:"NAHAL FATHIMA TK",division:"SW",image:"image/nahal-tk.jpeg"},
-{no:"54",name:"NIRANJANADAS K",division:"SW",image:"image/niranjanadas.jpeg"},
-{no:"55",name:"NAFLA FATHIMA P",division:"SW",image:"image/nafla.jpeg"},
-{no:"56",name:"HANIYA SHERIN P",division:"SW",image:"image/haniya.jpeg"},
-{no:"57",name:"NADHA FATHIMA K",division:"SW",image:"image/nadha.jpeg"},
-{no:"58",name:"FATHIMA ASHNA K",division:"SW",image:"image/ashna.jpeg"},
-{no:"59",name:"FATHIMA RASHA",division:"SW",image:"image/rasha.jpeg"},
-{no:"60",name:"SHILNA K",division:"SW",image:"image/shilna.jpeg"},
-{no:"61",name:"SHIYA K",division:"SW",image:"image/shiya.jpeg"},
-{no:"62",name:"RIYA FATHIMA M",division:"SW",image:"image/riya-m.jpeg"},
-{no:"63",name:"ANANYA O",division:"SW",image:"image/ananya.jpeg"},
-{no:"64",name:"ASWATHI P",division:"SW",image:"image/aswathi.jpeg"},
-{no:"65",name:"FATHIMA SAFA PP",division:"SW",image:"image/safapp.jpeg"}
+{no:"01",name:"S0MIR CHARAH",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/somir.jpeg"},
+{no:"02",name:"MOHAMMED NAHAL C P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nahalcp.jpeg"},
+{no:"03",name:"MOHAMMED SHAMEEL M P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shameel.jpeg"},
+{no:"04",name:"MUHAMMED SHAHALAD KK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shahalad.jpeg"},
+{no:"05",name:"ABDULLA SHA ALAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdulla.jpeg"},
+{no:"06",name:"MUHAMMED ANAS PT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/anas.jpeg"},
+{no:"07",name:"ABHINAV C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abhinav.jpeg"},
+{no:"08",name:"AHSAN AHAMMED K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ahsan.jpeg"},
+{no:"09",name:"MUHAMMED AMAAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/amaan.jpeg"},
+{no:"10",name:"SAMSEER JASIM P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/samseer.jpeg"},
+{no:"11",name:"MUHAMMED MUHSIN C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/muhsin.jpeg"},
+{no:"12",name:"MUHAMMED ALAN O",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/alan.jpeg"},
+{no:"13",name:"NISSAM MUHAMMED JASSIL CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nissam.jpeg"},
+{no:"14",name:"ADIL MUHAMMED T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/adil.jpeg"},
+{no:"15",name:"MUHAMMED MISHAL K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/mishal.jpeg"},
+{no:"16",name:"MUHAMMED ABDULLA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdulla-p.jpeg"},
+{no:"17",name:"ADWAITH S",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/adwaith.jpeg"},
+{no:"18",name:"MUHAMMED AIMAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/aiman.jpeg"},
+{no:"19",name:"MUHAMMED SAHAL NP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/sahal.jpeg"},
+{no:"20",name:"MUHAMMED ZAMIN KK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/zamin.jpeg"},
+{no:"21",name:"MUHAMMED ANSIL K T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ansil.jpeg"},
+{no:"22",name:"ABDUL HASEEB C K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdul.jpeg"},
+{no:"23",name:"MUHAMMED HISHAM M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/hisham.jpeg"},
+{no:"24",name:"MUHAMMED AJMAL P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ajmal.jpeg"},
+{no:"25",name:"MUHAMMED ANSAF CH",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ansaf.jpeg"},
+{no:"26",name:"MOHAMMED SHAMMAS PT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shammas.jpeg"},
+{no:"27",name:"MUHAMMED SHIFIN KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shifin.jpeg"},
+{no:"28",name:"MUHAMMED NASHVAN KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nashvan.jpeg"},
+{no:"29",name:"MOHAMMED FARHAN V",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/farhan.jpeg"},
+{no:"30",name:"MUHAMMED IRSHAD KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/irshad.jpeg"},
+{no:"31",name:"MUHAMMED FARSIN TK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/farsintk.jpeg"},
+{no:"32",name:"MOHAMMED RAZAL KV",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/razal.jpeg"},
+{no:"33",name:"MOHAMMED SHIFIN SHAN PK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shifin-shan.jpeg"},
+{no:"34",name:"FATHIMA SANHA OK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/sanha.jpeg"},
+{no:"35",name:"FATHIMA AFNA T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/afna.jpeg"},
+{no:"36",name:"FATHIMA NAJILA KT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/najila.jpeg"},
+{no:"37",name:"SHAHMA SHAMEER P K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shahma.jpeg"},
+{no:"38",name:"SREESHMA KM",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shreeshma.jpeg"},
+{no:"39",name:"AYISHA MINHA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/minha.jpeg"},
+{no:"40",name:"FATHIMA ANSHIDA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/anshida.jpeg"},
+{no:"41",name:"LIYYA FATHIMA EP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/liyya.jpeg"},
+{no:"42",name:"FATHIMA DILSHA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/dilsha.jpeg"},
+{no:"43",name:"NIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/niya.jpeg"},
+{no:"44",name:"AJ SRINIDHI",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/srinidhi.jpeg"},
+{no:"45",name:"FATHIMA NASRIN K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nasrin.jpeg"},
+{no:"46",name:"FATHIMA SHIDA C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shida.jpeg"},
+{no:"47",name:"FATHIMATHUL ASHIFA CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ashifa.jpeg"},
+{no:"48",name:"FATHIMA BINSHA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/binsha.jpeg"},
+{no:"49",name:"AYSHA WAFA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/wafa.jpeg"},
+{no:"50",name:"HANNA FATHIMA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/hanna.jpeg"},
+{no:"51",name:"FATHIMA RIYA N",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/riya.jpeg"},
+{no:"52",name:"AMEYA SASIDHARAN CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ameya.jpeg"},
+{no:"53",name:"NAHAL FATHIMA TK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nahal-tk.jpeg"},
+{no:"54",name:"NIRANJANADAS K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/niranjanadas.jpeg"},
+{no:"55",name:"NAFLA FATHIMA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nafla.jpeg"},
+{no:"56",name:"HANIYA SHERIN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/haniya.jpeg"},
+{no:"57",name:"NADHA FATHIMA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nadha.jpeg"},
+{no:"58",name:"FATHIMA ASHNA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ashna.jpeg"},
+{no:"59",name:"FATHIMA RASHA",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/rasha.jpeg"},
+{no:"60",name:"SHILNA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shilna.jpeg"},
+{no:"61",name:"SHIYA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shiya.jpeg"},
+{no:"62",name:"RIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/riya-m.jpeg"},
+{no:"63",name:"ANANYA O",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ananya.jpeg"},
+{no:"64",name:"ASWATHI P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/aswathi.jpeg"},
+{no:"65",name:"FATHIMA SAFA PP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/safapp.jpeg"}
 ];
 
 const secondYear = [
@@ -385,117 +382,126 @@ function showNoPhoto(img){
  img.replaceWith(fallback);
 }
 
-function displayFirstCadets(division){
- const container=document.getElementById("firstCadetContainer"+division);
- const searchInput = document.getElementById("firstSearchInput"+division);
- const query=(searchInput ? searchInput.value : "").trim().toLowerCase();
+function renderCadetCards(containerId, countId, records, searchInputId) {
+ const container = document.getElementById(containerId);
+ const searchInput = document.getElementById(searchInputId);
+ const query = (searchInput ? searchInput.value : "").trim().toLowerCase();
  
- const records=firstYear.filter(c=>c.division===division);
- const filtered=records.filter(c=>(c.no+" "+c.name).toLowerCase().includes(query));
- 
- const countEl = document.getElementById("firstCadetCount"+division);
- if(countEl) countEl.textContent=filtered.length+" of "+records.length+" cadets";
- 
- if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
- 
- container.innerHTML=filtered.map(c=>{
-  const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
-  const details=[["Cadet Number","[Enter cadet number]"],["Division",c.division],["Rank","[Enter rank]"],["Phone Number","[Enter phone number]"],["Father Name","[Enter father name]"],["Mother Name","[Enter mother name]"],["Blood Group","[Enter blood group]"],["Date of Birth","[Enter DOB]"],["Attendance","[Enter attendance]"],["Class Name","[Enter class]"]];
-  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">[Cadet Number]</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div></article>`;
+ const filtered = records.filter(c => [
+  c.no, c.name, c.cadetNo, c.rank, c.phone, c.father, c.mother, c.blood, c.dob, c.className, c.division
+ ].join(" ").toLowerCase().includes(query));
+
+ const countEl = document.getElementById(countId);
+ if(countEl) countEl.textContent = filtered.length + " of " + records.length + " cadets";
+
+ if(!filtered.length){
+  container.innerHTML = '<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';
+  return;
+ }
+
+ container.innerHTML = filtered.map(c => {
+  const photo = c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
+  const details = [
+   ["Cadet Number", c.cadetNo || "Not added"],
+   ["Division", c.division],
+   ["Rank", c.rank || "Cadet"],
+   ["Phone Number", c.phone || "Not added"],
+   ["Father Name", c.father || "Not added"],
+   ["Mother Name", c.mother || "Not added"],
+   ["Blood Group", c.blood || "Not added"],
+   ["Date of Birth", c.dob || "Not added"],
+   ["Attendance", c.attendance || "NULL"],
+   ["Class Name", c.className || "Not added"]
+  ];
+  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div></article>`;
  }).join("");
+}
+
+function displayFirstCadets(division){
+ const records = firstYear.filter(c => c.division === division);
+ renderCadetCards("firstCadetContainer" + division, "firstCadetCount" + division, records, "firstSearchInput" + division);
 }
 
 function displayCadets(division){
- const container=document.getElementById("cadetContainer"+division);
- const searchInput = document.getElementById("searchInput"+division);
- const query=(searchInput ? searchInput.value : "").trim().toLowerCase();
- 
- const records=secondYear.map((c,index)=>({...c,division:index<23?"SD":"SW"})).filter(c=>c.division===division);
- const filtered=records.filter(c=>[c.no,c.name,c.cadetNo,c.rank,c.phone,c.father,c.mother,c.blood,c.dob,c.className,c.division].join(" ").toLowerCase().includes(query));
- 
- const countEl = document.getElementById("cadetCount"+division);
- if(countEl) countEl.textContent=filtered.length+" of "+records.length+" cadets";
- 
- if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
- 
- container.innerHTML=filtered.map(c=>{
- const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
- const details=[["Cadet Number",c.cadetNo],["Division",c.division],["Rank",c.rank],["Phone Number",c.phone],["Father Name",c.father],["Mother Name",c.mother],["Blood Group",c.blood],["Date of Birth",c.dob],["Attendance",c.attendance],["Class Name",c.className||"Not added"]];
- return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo)}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value||"Not added")}</span></div>`).join("")}</div></article>`;
- }).join("");
+ const records = secondYear.map((c, index) => ({...c, division: index < 23 ? "SD" : "SW"})).filter(c => c.division === division);
+ renderCadetCards("cadetContainer" + division, "cadetCount" + division, records, "searchInput" + division);
 }
+
 function showDivision(year,division){
- const prefix=year==='first'?'first':'second';
- document.getElementById(prefix+'DivisionPicker').style.display='none';
- document.querySelectorAll('#'+prefix+'Year .division-panel').forEach(p=>p.classList.remove('active'));
- document.getElementById(prefix+division+'Panel').classList.add('active');
- if(year==='second') displayCadets(division);
- if(year==='first') displayFirstCadets(division);
+ const prefix = year === 'first' ? 'first' : 'second';
+ document.getElementById(prefix + 'DivisionPicker').style.display = 'none';
+ document.querySelectorAll('#' + prefix + 'Year .division-panel').forEach(p => p.classList.remove('active'));
+ document.getElementById(prefix + division + 'Panel').classList.add('active');
+ if(year === 'second') displayCadets(division);
+ if(year === 'first') displayFirstCadets(division);
 }
+
 function backToDivisions(year){
- const prefix=year==='first'?'first':'second';
- document.querySelectorAll('#'+prefix+'Year .division-panel').forEach(p=>p.classList.remove('active'));
- document.getElementById(prefix+'DivisionPicker').style.display='grid';
+ const prefix = year === 'first' ? 'first' : 'second';
+ document.querySelectorAll('#' + prefix + 'Year .division-panel').forEach(p => p.classList.remove('active'));
+ document.getElementById(prefix + 'DivisionPicker').style.display = 'grid';
 }
 
 function sendAdminMessage(method){
- const name=document.getElementById("visitorName").value.trim();
- const message=document.getElementById("visitorMessage").value.trim();
+ const name = document.getElementById("visitorName").value.trim();
+ const message = document.getElementById("visitorMessage").value.trim();
  if(!name || !message){
   alert("Please enter your name and message first.");
   return;
  }
- const body="Message from DUHSS THOOTHA NCC website\nName: "+name+"\n\nMessage: "+message;
- if(method==="whatsapp"){
-  const url="https://wa.me/916282579898?text="+encodeURIComponent(body);
-  window.open(url,"_blank","noopener,noreferrer");
+ const body = "Message from DUHSS THOOTHA NCC website\nName: " + name + "\n\nMessage: " + message;
+ if(method === "whatsapp"){
+  const url = "https://wa.me/916282579898?text=" + encodeURIComponent(body);
+  window.open(url, "_blank", "noopener,noreferrer");
  }else{
-  const url="mailto:nihalppthootha@gmail.com?subject="+encodeURIComponent("Message from NCC website")+"&body="+encodeURIComponent(body);
-  window.location.href=url;
+  const url = "mailto:nihalppthootha@gmail.com?subject=" + encodeURIComponent("Message from NCC website") + "&body=" + encodeURIComponent(body);
+  window.location.href = url;
  }
 }
-let selectedAcademicYear="2026-27";
+
+let selectedAcademicYear = "2026-27";
 function toggleYearMenu(){
- const menu=document.getElementById("yearMenu");
- const isOpen=menu.classList.toggle("open");
- document.getElementById("yearToggle").setAttribute("aria-expanded",String(isOpen));
+ const menu = document.getElementById("yearMenu");
+ const isOpen = menu.classList.toggle("open");
+ document.getElementById("yearToggle").setAttribute("aria-expanded", String(isOpen));
 }
+
 function selectYear(year){
- selectedAcademicYear=year;
- const menu=document.getElementById("yearMenu");
+ selectedAcademicYear = year;
+ const menu = document.getElementById("yearMenu");
  menu.classList.remove("open");
- document.getElementById("yearToggle").setAttribute("aria-expanded","false");
- document.querySelectorAll(".year-menu button").forEach(btn=>btn.classList.toggle("selected",btn.dataset.year===year));
- document.getElementById("yearStatus").textContent="Selected Academic Year: "+year.replace("-","–");
- const directory=document.getElementById("directoryMenu");
- directory.disabled=year!=="2026-27";
- directory.style.opacity=year!=="2026-27"?".55":"1";
- if(year==="2025-26") showPage("previousYear");
- else if(year==="2027-28") showPage("upcomingYear");
+ document.getElementById("yearToggle").setAttribute("aria-expanded", "false");
+ document.querySelectorAll(".year-menu button").forEach(btn => btn.classList.toggle("selected", btn.dataset.year === year));
+ document.getElementById("yearStatus").textContent = "Selected Academic Year: " + year.replace("-", "–");
+ const directory = document.getElementById("directoryMenu");
+ directory.disabled = year !== "2026-27";
+ directory.style.opacity = year !== "2026-27" ? ".55" : "1";
+ if(year === "2025-26") showPage("previousYear");
+ else if(year === "2027-28") showPage("upcomingYear");
  else showPage("home");
 }
-function showPage(pageId,button){
- if((pageId==="firstYear"||pageId==="secondYear")&&selectedAcademicYear!=="2026-27"){
+
+function showPage(pageId, button){
+ if((pageId === "firstYear" || pageId === "secondYear") && selectedAcademicYear !== "2026-27"){
   alert("First Year and Second Year details are available under academic year 2026–27.");
   return;
  }
- document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===pageId));
- document.querySelectorAll("nav button[data-page]").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===pageId));
- if(pageId!=="firstYear"&&pageId!=="secondYear") document.getElementById("directoryMenu").value="";
- if(pageId!=="ano"&&pageId!=="about"&&pageId!=="contact") document.getElementById("infoMenu").value="";
- window.scrollTo({top:0,behavior:"smooth"});
+ document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === pageId));
+ document.querySelectorAll("nav button[data-page]").forEach(btn => btn.classList.toggle("active", btn.dataset.page === pageId));
+ if(pageId !== "firstYear" && pageId !== "secondYear") document.getElementById("directoryMenu").value = "";
+ if(pageId !== "ano" && pageId !== "about" && pageId !== "contact") document.getElementById("infoMenu").value = "";
+ window.scrollTo({top: 0, behavior: "smooth"});
 }
 
-// Safely attach event listeners
 const fInSD = document.getElementById("firstSearchInputSD");
-if(fInSD) fInSD.addEventListener("input",()=>displayFirstCadets("SD"));
+if(fInSD) fInSD.addEventListener("input", () => displayFirstCadets("SD"));
 const fInSW = document.getElementById("firstSearchInputSW");
-if(fInSW) fInSW.addEventListener("input",()=>displayFirstCadets("SW"));
+if(fInSW) fInSW.addEventListener("input", () => displayFirstCadets("SW"));
 
 const sInSD = document.getElementById("searchInputSD");
-if(sInSD) sInSD.addEventListener("input",()=>displayCadets("SD"));
+if(sInSD) sInSD.addEventListener("input", () => displayCadets("SD"));
 const sInSW = document.getElementById("searchInputSW");
-if(sInSW) sInSW.addEventListener("input",()=>displayCadets("SW"));
+if(sInSW) sInSW.addEventListener("input", () => displayCadets("SW"));
 </script>
 </body>
 </html>

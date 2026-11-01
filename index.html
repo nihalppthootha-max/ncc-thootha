@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -38,11 +37,11 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .stat{background:#fff;padding:18px;border-radius:13px;text-align:center;border:1px solid var(--line);border-bottom:3px solid var(--gold)}
 .stat strong{display:block;font-size:1.6rem;color:var(--green);margin-bottom:5px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
-#searchInput{flex:1;min-width:220px;padding:12px;border:1px solid #cbdccf;border-radius:10px;font-size:1rem}
+#firstSearchInputSD, #firstSearchInputSW, #searchInputSD, #searchInputSW{flex:1;min-width:220px;padding:12px;border:1px solid #cbdccf;border-radius:10px;font-size:1rem}
 #cadetCount{color:var(--muted);font-weight:700}
-.cadet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
-.cadet-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
-.cadet-photo{width:100%;height:180px;object-fit:cover;background:#e7edf2;display:block}
+#firstYearContainer{display:block}.cadet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.cadet-card{min-width:0;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #102b2412;border:1px solid #e0e9e1}
+.cadet-photo{width:100%;height:250px;object-fit:contain;object-position:center;background:#e7edf2;display:block}
 .photo-box{width:170px;height:170px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
 .photo-box img{width:100%;height:100%;object-fit:cover;display:block}
 .school-photo-box{width:100%;max-width:420px;height:220px;margin:0 auto;overflow:hidden;border-radius:10px;background:#dce8ee}
@@ -61,6 +60,8 @@ main{max-width:1200px;margin:0 auto;padding:22px 14px 40px}
 .form-grid input,.form-grid textarea{width:100%;padding:11px;border:1px solid #cbdccf;border-radius:9px;font:inherit}
 .form-grid textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;border-top:1px solid var(--line);background:#fff}
+@media(max-width:850px) and (min-width:561px){.cadet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cadet-grid{grid-template-columns:1fr}.cadet-photo{height:260px}}
 @media(max-width:480px){nav{gap:6px;padding:10px 8px}nav button,nav select{padding:0 10px;font-size:.82rem;height:38px}.hero,.panel{padding:18px}.detail{grid-template-columns:100px 1fr}}
 
 .category-heading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 2px;padding:12px 16px;border-radius:12px;background:linear-gradient(110deg,#e5f1e7,#f7f3e7);border-left:5px solid var(--green);color:var(--navy);font-weight:800;letter-spacing:.4px}
@@ -126,9 +127,30 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="panel">
 <h2 class="section-title">First Year Cadets</h2>
 <p class="muted">Select SD or SW to view the cadet profiles. SD includes serial numbers 01–33; SW includes 34–65.</p>
-<div class="cadet-grid" id="firstYearContainer"><div class="division-picker" id="firstDivisionPicker"><button class="division-btn" onclick="showDivision('first','SD')" type="button">SD</button><button class="division-btn" onclick="showDivision('first','SW')" type="button">SW</button></div>
-<div class="division-panel" id="firstSDPanel"><button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button><div class="toolbar"><input id="firstSearchInputSD" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SD cadets"><span id="firstCadetCountSD">33 cadets</span></div><div class="cadet-grid" id="firstCadetContainerSD"></div></div>
-<div class="division-panel" id="firstSWPanel"><button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button><div class="toolbar"><input id="firstSearchInputSW" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SW cadets"><span id="firstCadetCountSW">32 cadets</span></div><div class="cadet-grid" id="firstCadetContainerSW"></div></div></section>
+<div id="firstYearContainer">
+<div class="division-picker" id="firstDivisionPicker">
+<button class="division-btn" onclick="showDivision('first','SD')" type="button">SD</button>
+<button class="division-btn" onclick="showDivision('first','SW')" type="button">SW</button>
+</div>
+<div class="division-panel" id="firstSDPanel">
+<button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button>
+<div class="toolbar">
+<input id="firstSearchInputSD" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SD cadets">
+<span id="firstCadetCountSD">33 cadets</span>
+</div>
+<div class="cadet-grid" id="firstCadetContainerSD"></div>
+</div>
+<div class="division-panel" id="firstSWPanel">
+<button class="division-back" onclick="backToDivisions('first')" type="button">← Back to SD / SW</button>
+<div class="toolbar">
+<input id="firstSearchInputSW" type="search" placeholder="Search by name or serial number..." aria-label="Search First Year SW cadets">
+<span id="firstCadetCountSW">32 cadets</span>
+</div>
+<div class="cadet-grid" id="firstCadetContainerSW"></div>
+</div>
+</div>
+</div>
+</section>
 <section class="page" id="secondYear">
 <div class="panel">
 <h2 class="section-title">Second Year Cadets</h2>
@@ -317,7 +339,7 @@ const secondYear = [
 {no:"06",name:"MUHAMMED SHEFIN. V",cadetNo:"KL2025SDIA3211199",rank:"Cadet",phone:"9656666106",father:"SAKKEER V",mother:"JASEENA KT",blood:"B+",dob:"11-05-2009",attendance:"NULL",className:"B2",image:"image/shefin v.jpeg"},
 {no:"07",name:"MUHAMMED SAFVAN TK",cadetNo:"KL2025SDIA3211200",rank:"Cadet",phone:"9745976898",father:"ABDUSSALAM TK",mother:"RASHEEDA C",blood:"A+",dob:"23-11-2009",attendance:"NULL",className:"CS2",image:"image/safwan.jpeg"},
 {no:"08",name:"MUHAMMED ANSHIF O",cadetNo:"KL2025SDIA3211202",rank:"Cadet",phone:"8606688821",father:"ANDHUL GAFOOR",mother:"MUFEEDHA",blood:"A+",dob:"10-04-2010",attendance:"NULL",className:"D2",image:"image/anshif.jpeg"},
-{no:"07",name:"MUHAMMED SHIFIN ROSHEN K",cadetNo:"KL2025SDIA3211201",rank:"Cadet",phone:"9544274612",father:"ABDUL SALAM K",mother:"BUSHRA P",blood:"B+",dob:"21-02-2009",attendance:"NULL",className:"D2",image:"image/shifin rosen.jpeg"},
+{no:"09",name:"MUHAMMED SHIFIN ROSHEN K",cadetNo:"KL2025SDIA3211201",rank:"Cadet",phone:"9544274612",father:"ABDUL SALAM K",mother:"BUSHRA P",blood:"B+",dob:"21-02-2009",attendance:"NULL",className:"D2",image:"image/shifin rosen.jpeg"},
 {no:"10",name:"ABHINAND. V. K",cadetNo:"KL2025SDIA3211203",rank:"Cadet",phone:"8113090790",father:"MOHANDAS V K",mother:"SANGEETHA P",blood:"B+",dob:"15-04-2009",attendance:"NULL",className:"C2",image:"image/abinand.jpeg"},
 {no:"11",name:"MUHAMMED SHAMIL K",cadetNo:"KL2025SDIA3211204",rank:"Cadet",phone:"7907466929",father:"MUJEEB RAHMAN K",mother:"SUMAYYA N",blood:"O+",dob:"07-12-2008",attendance:"NULL",className:"D2",image:"image/shamil.jpeg"},
 {no:"12",name:"MOHAMMED SHAMIL PT",cadetNo:"KL2025SDIA3211205",rank:"Cadet",phone:"9947634636",father:"SAKKEER PT",mother:"KHAIRUNNISA A",blood:"B+",dob:"14-03-2008",attendance:"NULL",className:"B2",image:"image/shamil pt.jpeg"},
@@ -362,15 +384,22 @@ function showNoPhoto(img){
  fallback.textContent="Photo unavailable";
  img.replaceWith(fallback);
 }
+
 function displayFirstCadets(division){
  const container=document.getElementById("firstCadetContainer"+division);
- const query=(document.getElementById("firstSearchInput"+division).value||"").trim().toLowerCase();
+ const searchInput = document.getElementById("firstSearchInput"+division);
+ const query=(searchInput ? searchInput.value : "").trim().toLowerCase();
+ 
  const records=firstYear.filter(c=>c.division===division);
  const filtered=records.filter(c=>(c.no+" "+c.name).toLowerCase().includes(query));
- document.getElementById("firstCadetCount"+division).textContent=filtered.length+" of "+records.length+" cadets";
+ 
+ const countEl = document.getElementById("firstCadetCount"+division);
+ if(countEl) countEl.textContent=filtered.length+" of "+records.length+" cadets";
+ 
  if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
+ 
  container.innerHTML=filtered.map(c=>{
-  const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo space</div>';
+  const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
   const details=[["Cadet Number","[Enter cadet number]"],["Division",c.division],["Rank","[Enter rank]"],["Phone Number","[Enter phone number]"],["Father Name","[Enter father name]"],["Mother Name","[Enter mother name]"],["Blood Group","[Enter blood group]"],["Date of Birth","[Enter DOB]"],["Attendance","[Enter attendance]"],["Class Name","[Enter class]"]];
   return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">[Cadet Number]</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div></article>`;
  }).join("");
@@ -378,11 +407,17 @@ function displayFirstCadets(division){
 
 function displayCadets(division){
  const container=document.getElementById("cadetContainer"+division);
- const query=(document.getElementById("searchInput"+division).value||"").trim().toLowerCase();
+ const searchInput = document.getElementById("searchInput"+division);
+ const query=(searchInput ? searchInput.value : "").trim().toLowerCase();
+ 
  const records=secondYear.map((c,index)=>({...c,division:index<23?"SD":"SW"})).filter(c=>c.division===division);
  const filtered=records.filter(c=>[c.no,c.name,c.cadetNo,c.rank,c.phone,c.father,c.mother,c.blood,c.dob,c.className,c.division].join(" ").toLowerCase().includes(query));
- document.getElementById("cadetCount"+division).textContent=filtered.length+" of "+records.length+" cadets";
+ 
+ const countEl = document.getElementById("cadetCount"+division);
+ if(countEl) countEl.textContent=filtered.length+" of "+records.length+" cadets";
+ 
  if(!filtered.length){container.innerHTML='<div class="empty-state"><h3>No cadets found</h3><p>Try another search term.</p></div>';return;}
+ 
  container.innerHTML=filtered.map(c=>{
  const photo=c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
  const details=[["Cadet Number",c.cadetNo],["Division",c.division],["Rank",c.rank],["Phone Number",c.phone],["Father Name",c.father],["Mother Name",c.mother],["Blood Group",c.blood],["Date of Birth",c.dob],["Attendance",c.attendance],["Class Name",c.className||"Not added"]];
@@ -450,10 +485,17 @@ function showPage(pageId,button){
  if(pageId!=="ano"&&pageId!=="about"&&pageId!=="contact") document.getElementById("infoMenu").value="";
  window.scrollTo({top:0,behavior:"smooth"});
 }
-document.getElementById("firstSearchInputSD").addEventListener("input",()=>displayFirstCadets("SD"));
-document.getElementById("firstSearchInputSW").addEventListener("input",()=>displayFirstCadets("SW"));
-document.getElementById("searchInputSD").addEventListener("input",()=>displayCadets("SD"));
-document.getElementById("searchInputSW").addEventListener("input",()=>displayCadets("SW"));
+
+// Safely attach event listeners
+const fInSD = document.getElementById("firstSearchInputSD");
+if(fInSD) fInSD.addEventListener("input",()=>displayFirstCadets("SD"));
+const fInSW = document.getElementById("firstSearchInputSW");
+if(fInSW) fInSW.addEventListener("input",()=>displayFirstCadets("SW"));
+
+const sInSD = document.getElementById("searchInputSD");
+if(sInSD) sInSD.addEventListener("input",()=>displayCadets("SD"));
+const sInSW = document.getElementById("searchInputSW");
+if(sInSW) sInSW.addEventListener("input",()=>displayCadets("SW"));
 </script>
 </body>
 </html>

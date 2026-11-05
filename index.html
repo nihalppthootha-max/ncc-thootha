@@ -76,6 +76,21 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 .division-panel{display:none}.division-panel.active{display:block}
 .division-back{margin:4px 0 14px;border:0;border-radius:9px;padding:9px 14px;background:#e8efe9;color:#173f32;font-weight:700;cursor:pointer}
 @media(max-width:520px){.division-picker{gap:9px}.division-btn{padding:15px 8px;font-size:.94rem}}
+
+.staff-login-trigger{height:40px;border:1px solid #d6e3d8;border-radius:11px;padding:0 15px;background:#102b24;color:#fff;font-weight:700;font-size:.91rem;cursor:pointer}
+.staff-login-trigger:hover{background:#176b45}
+.staff-modal{display:none;position:fixed;inset:0;background:#071b16b8;z-index:1000;align-items:center;justify-content:center;padding:16px}
+.staff-modal.open{display:flex}
+.staff-dialog{width:min(100%,420px);background:#fff;border-radius:16px;padding:22px;box-shadow:0 18px 60px #0004}
+.staff-dialog h2{margin:0 0 8px;color:#102b24}
+.staff-dialog p{color:#65786d;line-height:1.5}
+.staff-dialog label{display:block;font-weight:700;margin:12px 0 6px}
+.staff-dialog input{width:100%;padding:12px;border:1px solid #cbd9ce;border-radius:9px;font:inherit}
+.staff-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.staff-actions button{border:0;border-radius:9px;padding:11px 14px;background:#176b45;color:white;font-weight:700;cursor:pointer}
+.staff-actions button.secondary{background:#e8efe9;color:#102b24}
+.staff-status{min-height:22px;font-size:.9rem;margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -104,6 +119,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <option value="about">About Institution</option>
 <option value="contact">Admin &amp; Contact</option>
 </select>
+<button class="staff-login-trigger" type="button" onclick="openStaffLogin()">Staff Login</button>
 </nav>
 <main>
 <section class="page active" id="home">
@@ -187,7 +203,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <section class="page" id="ano">
 <div class="panel">
 <h2 class="section-title">Associate NCC Officer (ANO) Details</h2>
-<p class="muted">These details are displayed as read-only information. Edit the HTML code to update them.</p>
+<p class="muted">Public ANO information. Contact details are not displayed publicly.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start">
 <div style="background:#eaf4f7;border-radius:12px;padding:18px;text-align:center">
 <div class="photo-box">
@@ -199,11 +215,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div>
 <div class="detail"><b>Name</b><span>ABDUL HAKEEM</span></div>
 <div class="detail"><b>Rank</b><span>CTO</span></div>
-<div class="detail"><b>Address</b><span>THOOTHA THEKKEPPURAM 679357 Malaikathodi house vazhenkada po</span></div>
 <div class="detail"><b>Unit</b><span>28 KERALA BN OTTAPALAM</span></div>
-<div class="detail"><b>Phone Number</b><span>9605688025</span></div>
-<div class="detail"><b>Date of Birth</b><span>07-05-1996</span></div>
-<div class="detail"><b>Blood Group</b><span>A+ve</span></div>
 </div>
 </div>
 </div>
@@ -257,116 +269,192 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 </div>
 </section>
 </main>
+<div class="staff-modal" id="staffLoginModal" role="dialog" aria-modal="true" aria-labelledby="staffLoginTitle" onclick="if(event.target===this)closeStaffLogin()">
+ <div class="staff-dialog">
+  <h2 id="staffLoginTitle">Staff Login</h2>
+  <p id="staffLoginHint">Choose your staff role to continue.</p>
+  <div class="staff-actions" id="staffRoleChoices">
+   <button type="button" onclick="chooseStaffRole('admin')">Admin Login</button>
+   <button type="button" onclick="chooseStaffRole('ano')">ANO Login</button>
+   <button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>
+  </div>
+  <form id="staffLoginForm" style="display:none" onsubmit="submitStaffLogin(event)">
+   <label for="staffEmail">Email</label><input id="staffEmail" type="email" autocomplete="username" required>
+   <label for="staffPassword">Password</label><input id="staffPassword" type="password" autocomplete="current-password" required>
+   <div class="staff-actions"><button id="staffSubmit" type="submit">Sign in</button><button class="secondary" type="button" onclick="backToStaffRoles()">Back</button></div>
+  </form>
+  <div class="staff-status" id="staffLoginStatus" aria-live="polite"></div>
+ </div>
+</div>
 <footer>DUHSS THOOTHA NCC Cadet Directory · 28 Kerala Battalion NCC, Ottapalam</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Public browser configuration only. Never put a Supabase secret/service_role key here.
+const SUPABASE_URL = "https://sueqaurfxffoefukllqx.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_0QsnCfsnGj04F8px3HeC2w_zyTnek";
+const nccSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let selectedStaffRole = null;
+let signedInStaffRole = null;
+function openStaffLogin(){
+ document.getElementById('staffLoginModal').classList.add('open');
+ document.getElementById('staffLoginStatus').textContent='';
+ backToStaffRoles();
+}
+function closeStaffLogin(){document.getElementById('staffLoginModal').classList.remove('open');}
+function chooseStaffRole(role){
+ selectedStaffRole=role;
+ const emailByRole={admin:'Niihaallley@gmail.com',ano:'Nihalppthootha@gmail.com'};
+ document.getElementById('staffEmail').value=emailByRole[role] || '';
+ document.getElementById('staffRoleChoices').style.display='none';
+ document.getElementById('staffLoginForm').style.display='block';
+ document.getElementById('staffLoginHint').textContent='Sign in with the '+role.toUpperCase()+' account.';
+ document.getElementById('staffLoginStatus').textContent='';
+}
+function backToStaffRoles(){
+ selectedStaffRole=null;
+ document.getElementById('staffRoleChoices').style.display='flex';
+ document.getElementById('staffLoginForm').style.display='none';
+ document.getElementById('staffLoginHint').textContent='Choose your staff role to continue.';
+ document.getElementById('staffLoginForm').reset();
+}
+async function submitStaffLogin(event){
+ event.preventDefault();
+ const status=document.getElementById('staffLoginStatus');
+ const submit=document.getElementById('staffSubmit');
+ submit.disabled=true; status.textContent='Signing in…';
+ const email=document.getElementById('staffEmail').value.trim();
+ const password=document.getElementById('staffPassword').value;
+ try{
+  const {data,error}=await nccSupabase.auth.signInWithPassword({email,password});
+  if(error) throw error;
+  const {data:roleRow,error:roleError}=await nccSupabase.from('user_roles').select('role').eq('user_id',data.user.id).single();
+  if(roleError || !roleRow || roleRow.role!==selectedStaffRole){
+   await nccSupabase.auth.signOut();
+   throw new Error('This account does not have the selected '+selectedStaffRole.toUpperCase()+' role.');
+  }
+  signedInStaffRole=roleRow.role;
+  status.textContent='Signed in as '+signedInStaffRole.toUpperCase()+'.';
+  document.getElementById('staffLoginHint').textContent='Login verified. The editing dashboard is not added yet.';
+  document.getElementById('staffLoginForm').style.display='none';
+  document.getElementById('staffRoleChoices').innerHTML='<button type="button" onclick="staffSignOut()">Sign out</button><button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>';
+ }catch(error){status.textContent=error.message || 'Login failed. Check your details and try again.';}
+ finally{submit.disabled=false;}
+}
+async function staffSignOut(){
+ await nccSupabase.auth.signOut(); signedInStaffRole=null;
+ document.getElementById('staffRoleChoices').innerHTML='<button type="button" onclick="chooseStaffRole(\'admin\')">Admin Login</button><button type="button" onclick="chooseStaffRole(\'ano\')">ANO Login</button><button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>';
+ backToStaffRoles();
+}
+</script>
 <script>
 const firstYear = [
-{no:"01",name:"S0MIR CHARAH",cadetNo:"not addedni",rank:"Cadet",phone:"6252579898",father:"mohammed nihal",mother:"nihal mohammed nihal",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/somir.jpeg"},
-{no:"02",name:"MOHAMMED NAHAL C P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nahalcp.jpeg"},
-{no:"03",name:"MOHAMMED SHAMEEL M P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shameel.jpeg"},
-{no:"04",name:"MUHAMMED SHAHALAD KK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shahalad.jpeg"},
-{no:"05",name:"ABDULLA SHA ALAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdulla.jpeg"},
-{no:"06",name:"MUHAMMED ANAS PT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/anas.jpeg"},
-{no:"07",name:"ABHINAV C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abhinav.jpeg"},
-{no:"08",name:"AHSAN AHAMMED K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ahsan.jpeg"},
-{no:"09",name:"MUHAMMED AMAAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/amaan.jpeg"},
-{no:"10",name:"SAMSEER JASIM P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/samseer.jpeg"},
-{no:"11",name:"MUHAMMED MUHSIN C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/muhsin.jpeg"},
-{no:"12",name:"MUHAMMED ALAN O",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/alan.jpeg"},
-{no:"13",name:"NISSAM MUHAMMED JASSIL CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nissam.jpeg"},
-{no:"14",name:"ADIL MUHAMMED T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/adil.jpeg"},
-{no:"15",name:"MUHAMMED MISHAL K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/mishal.jpeg"},
-{no:"16",name:"MUHAMMED ABDULLA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdulla-p.jpeg"},
-{no:"17",name:"ADWAITH S",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/adwaith.jpeg"},
-{no:"18",name:"MUHAMMED AIMAN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/aiman.jpeg"},
-{no:"19",name:"MUHAMMED SAHAL NP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/sahal.jpeg"},
-{no:"20",name:"MUHAMMED ZAMIN KK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/zamin.jpeg"},
-{no:"21",name:"MUHAMMED ANSIL K T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ansil.jpeg"},
-{no:"22",name:"ABDUL HASEEB C K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/abdul.jpeg"},
-{no:"23",name:"MUHAMMED HISHAM M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/hisham.jpeg"},
-{no:"24",name:"MUHAMMED AJMAL P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ajmal.jpeg"},
-{no:"25",name:"MUHAMMED ANSAF CH",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/ansaf.jpeg"},
-{no:"26",name:"MOHAMMED SHAMMAS PT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shammas.jpeg"},
-{no:"27",name:"MUHAMMED SHIFIN KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shifin.jpeg"},
-{no:"28",name:"MUHAMMED NASHVAN KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/nashvan.jpeg"},
-{no:"29",name:"MOHAMMED FARHAN V",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/farhan.jpeg"},
-{no:"30",name:"MUHAMMED IRSHAD KP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/irshad.jpeg"},
-{no:"31",name:"MUHAMMED FARSIN TK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/farsintk.jpeg"},
-{no:"32",name:"MOHAMMED RAZAL KV",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/razal.jpeg"},
-{no:"33",name:"MOHAMMED SHIFIN SHAN PK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SD",image:"image/shifin-shan.jpeg"},
-{no:"34",name:"FATHIMA SANHA OK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/sanha.jpeg"},
-{no:"35",name:"FATHIMA AFNA T",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/afna.jpeg"},
-{no:"36",name:"FATHIMA NAJILA KT",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/najila.jpeg"},
-{no:"37",name:"SHAHMA SHAMEER P K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shahma.jpeg"},
-{no:"38",name:"SREESHMA KM",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shreeshma.jpeg"},
-{no:"39",name:"AYISHA MINHA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/minha.jpeg"},
-{no:"40",name:"FATHIMA ANSHIDA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/anshida.jpeg"},
-{no:"41",name:"LIYYA FATHIMA EP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/liyya.jpeg"},
-{no:"42",name:"FATHIMA DILSHA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/dilsha.jpeg"},
-{no:"43",name:"NIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/niya.jpeg"},
-{no:"44",name:"AJ SRINIDHI",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/srinidhi.jpeg"},
-{no:"45",name:"FATHIMA NASRIN K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nasrin.jpeg"},
-{no:"46",name:"FATHIMA SHIDA C",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shida.jpeg"},
-{no:"47",name:"FATHIMATHUL ASHIFA CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ashifa.jpeg"},
-{no:"48",name:"FATHIMA BINSHA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/binsha.jpeg"},
-{no:"49",name:"AYSHA WAFA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/wafa.jpeg"},
-{no:"50",name:"HANNA FATHIMA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/hanna.jpeg"},
-{no:"51",name:"FATHIMA RIYA N",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/riya n.jpeg"},
-{no:"52",name:"AMEYA SASIDHARAN CP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ameya.jpeg"},
-{no:"53",name:"NAHAL FATHIMA TK",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nahal-tk.jpeg"},
-{no:"54",name:"NIRANJANADAS K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/niranjanadas.jpeg"},
-{no:"55",name:"NAFLA FATHIMA P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nafla.jpeg"},
-{no:"56",name:"HANIYA SHERIN P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/haniya.jpeg"},
-{no:"57",name:"NADHA FATHIMA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/nadha.jpeg"},
-{no:"58",name:"FATHIMA ASHNA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ashna.jpeg"},
-{no:"59",name:"FATHIMA RASHA",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/rasha.jpeg"},
-{no:"60",name:"SHILNA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shilna.jpeg"},
-{no:"61",name:"SHIYA K",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/shiya.jpeg"},
-{no:"62",name:"RIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/riya.jpeg"},
-{no:"63",name:"ANANYA O",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/ananya.jpeg"},
-{no:"64",name:"ASWATHI P",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/aswathi.jpeg"},
-{no:"65",name:"FATHIMA SAFA PP",cadetNo:"Not added",rank:"Cadet",phone:"Not added",father:"Not added",mother:"Not added",blood:"Not added",dob:"Not added",attendance:"NULL",className:"Not added",division:"SW",image:"image/safapp.jpeg"}
+{no:"01",name:"S0MIR CHARAH",cadetNo:"not addedni",rank:"Cadet",className:"Not added",division:"SD",image:"image/somir.jpeg"},
+{no:"02",name:"MOHAMMED NAHAL C P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/nahalcp.jpeg"},
+{no:"03",name:"MOHAMMED SHAMEEL M P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shameel.jpeg"},
+{no:"04",name:"MUHAMMED SHAHALAD KK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shahalad.jpeg"},
+{no:"05",name:"ABDULLA SHA ALAN P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/abdulla.jpeg"},
+{no:"06",name:"MUHAMMED ANAS PT",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/anas.jpeg"},
+{no:"07",name:"ABHINAV C",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/abhinav.jpeg"},
+{no:"08",name:"AHSAN AHAMMED K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/ahsan.jpeg"},
+{no:"09",name:"MUHAMMED AMAAN P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/amaan.jpeg"},
+{no:"10",name:"SAMSEER JASIM P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/samseer.jpeg"},
+{no:"11",name:"MUHAMMED MUHSIN C",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/muhsin.jpeg"},
+{no:"12",name:"MUHAMMED ALAN O",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/alan.jpeg"},
+{no:"13",name:"NISSAM MUHAMMED JASSIL CP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/nissam.jpeg"},
+{no:"14",name:"ADIL MUHAMMED T",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/adil.jpeg"},
+{no:"15",name:"MUHAMMED MISHAL K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/mishal.jpeg"},
+{no:"16",name:"MUHAMMED ABDULLA P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/abdulla-p.jpeg"},
+{no:"17",name:"ADWAITH S",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/adwaith.jpeg"},
+{no:"18",name:"MUHAMMED AIMAN P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/aiman.jpeg"},
+{no:"19",name:"MUHAMMED SAHAL NP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/sahal.jpeg"},
+{no:"20",name:"MUHAMMED ZAMIN KK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/zamin.jpeg"},
+{no:"21",name:"MUHAMMED ANSIL K T",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/ansil.jpeg"},
+{no:"22",name:"ABDUL HASEEB C K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/abdul.jpeg"},
+{no:"23",name:"MUHAMMED HISHAM M",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/hisham.jpeg"},
+{no:"24",name:"MUHAMMED AJMAL P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/ajmal.jpeg"},
+{no:"25",name:"MUHAMMED ANSAF CH",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/ansaf.jpeg"},
+{no:"26",name:"MOHAMMED SHAMMAS PT",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shammas.jpeg"},
+{no:"27",name:"MUHAMMED SHIFIN KP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shifin.jpeg"},
+{no:"28",name:"MUHAMMED NASHVAN KP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/nashvan.jpeg"},
+{no:"29",name:"MOHAMMED FARHAN V",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/farhan.jpeg"},
+{no:"30",name:"MUHAMMED IRSHAD KP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/irshad.jpeg"},
+{no:"31",name:"MUHAMMED FARSIN TK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/farsintk.jpeg"},
+{no:"32",name:"MOHAMMED RAZAL KV",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/razal.jpeg"},
+{no:"33",name:"MOHAMMED SHIFIN SHAN PK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shifin-shan.jpeg"},
+{no:"34",name:"FATHIMA SANHA OK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/sanha.jpeg"},
+{no:"35",name:"FATHIMA AFNA T",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/afna.jpeg"},
+{no:"36",name:"FATHIMA NAJILA KT",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/najila.jpeg"},
+{no:"37",name:"SHAHMA SHAMEER P K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/shahma.jpeg"},
+{no:"38",name:"SREESHMA KM",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/shreeshma.jpeg"},
+{no:"39",name:"AYISHA MINHA M",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/minha.jpeg"},
+{no:"40",name:"FATHIMA ANSHIDA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/anshida.jpeg"},
+{no:"41",name:"LIYYA FATHIMA EP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/liyya.jpeg"},
+{no:"42",name:"FATHIMA DILSHA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/dilsha.jpeg"},
+{no:"43",name:"NIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/niya.jpeg"},
+{no:"44",name:"AJ SRINIDHI",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/srinidhi.jpeg"},
+{no:"45",name:"FATHIMA NASRIN K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/nasrin.jpeg"},
+{no:"46",name:"FATHIMA SHIDA C",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/shida.jpeg"},
+{no:"47",name:"FATHIMATHUL ASHIFA CP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/ashifa.jpeg"},
+{no:"48",name:"FATHIMA BINSHA P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/binsha.jpeg"},
+{no:"49",name:"AYSHA WAFA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/wafa.jpeg"},
+{no:"50",name:"HANNA FATHIMA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/hanna.jpeg"},
+{no:"51",name:"FATHIMA RIYA N",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/riya n.jpeg"},
+{no:"52",name:"AMEYA SASIDHARAN CP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/ameya.jpeg"},
+{no:"53",name:"NAHAL FATHIMA TK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/nahal-tk.jpeg"},
+{no:"54",name:"NIRANJANADAS K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/niranjanadas.jpeg"},
+{no:"55",name:"NAFLA FATHIMA P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/nafla.jpeg"},
+{no:"56",name:"HANIYA SHERIN P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/haniya.jpeg"},
+{no:"57",name:"NADHA FATHIMA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/nadha.jpeg"},
+{no:"58",name:"FATHIMA ASHNA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/ashna.jpeg"},
+{no:"59",name:"FATHIMA RASHA",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/rasha.jpeg"},
+{no:"60",name:"SHILNA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/shilna.jpeg"},
+{no:"61",name:"SHIYA K",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/shiya.jpeg"},
+{no:"62",name:"RIYA FATHIMA M",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/riya.jpeg"},
+{no:"63",name:"ANANYA O",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/ananya.jpeg"},
+{no:"64",name:"ASWATHI P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/aswathi.jpeg"},
+{no:"65",name:"FATHIMA SAFA PP",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SW",image:"image/safapp.jpeg"}
 ];
 
 const secondYear = [
-{no:"01",name:"MUHAMMED FAHEEM.",cadetNo:"KL2025SDIA3211194",rank:"Cadet",phone:"9847831460",father:"ABDUL KAREEM K",mother:"REJEENA M",blood:"AB+",dob:"24-11-2008",attendance:"NULL",className:"B2",image:"image/faheem.jpeg"},
-{no:"02",name:"ALFAS TK",cadetNo:"KL2025SDIA3211195",rank:"Cadet",phone:"9745310688",father:"MUHAMMED ASHRAF TK",mother:"SUHARA KT",blood:"A+",dob:"17-04-2009",attendance:"NULL",className:"CS2",image:"image/alfas.jpeg"},
-{no:"03",name:"AKHIL K",cadetNo:"KL2025SDIA3211196",rank:"Cadet",phone:"8547106823",father:"RAMACHANDRAN K",mother:"CHITHRA M",blood:"O+",dob:"17-10-2008",attendance:"NULL",className:"E2",image:"image/akhil.jpeg"},
-{no:"04",name:"MOHAMMED NIHAL P P",cadetNo:"KL2025SDIA3211197",rank:"Cadet",phone:"8592060875",father:"MOHAMMED SHAKKEER P P",mother:"RAJNA P P",blood:"B+",dob:"23-03-2009",attendance:"NULL",className:"CS2",image:"image/nihal.jpeg"},
-{no:"05",name:"ABDULLA SHADI KK",cadetNo:"KL2025SDIA3211198",rank:"Cadet",phone:"7902689222",father:"SHOUKATHALI K K",mother:"FASEELA K",blood:"O+",dob:"23-11-2008",attendance:"NULL",className:"C2",image:"image/shadi.jpeg"},
-{no:"06",name:"MUHAMMED SHEFIN. V",cadetNo:"KL2025SDIA3211199",rank:"Cadet",phone:"9656666106",father:"SAKKEER V",mother:"JASEENA KT",blood:"B+",dob:"11-05-2009",attendance:"NULL",className:"B2",image:"image/shefin v.jpeg"},
-{no:"07",name:"MUHAMMED SAFVAN TK",cadetNo:"KL2025SDIA3211200",rank:"Cadet",phone:"9745976898",father:"ABDUSSALAM TK",mother:"RASHEEDA C",blood:"A+",dob:"23-11-2009",attendance:"NULL",className:"CS2",image:"image/safwan.jpeg"},
-{no:"08",name:"MUHAMMED ANSHIF O",cadetNo:"KL2025SDIA3211202",rank:"Cadet",phone:"8606688821",father:"ANDHUL GAFOOR",mother:"MUFEEDHA",blood:"A+",dob:"10-04-2010",attendance:"NULL",className:"D2",image:"image/anshif.jpeg"},
-{no:"09",name:"MUHAMMED SHIFIN ROSHEN K",cadetNo:"KL2025SDIA3211201",rank:"Cadet",phone:"9544274612",father:"ABDUL SALAM K",mother:"BUSHRA P",blood:"B+",dob:"21-02-2009",attendance:"NULL",className:"D2",image:"image/shifin rosen.jpeg"},
-{no:"10",name:"ABHINAND. V. K",cadetNo:"KL2025SDIA3211203",rank:"Cadet",phone:"8113090790",father:"MOHANDAS V K",mother:"SANGEETHA P",blood:"B+",dob:"15-04-2009",attendance:"NULL",className:"C2",image:"image/abinand.jpeg"},
-{no:"11",name:"MUHAMMED SHAMIL K",cadetNo:"KL2025SDIA3211204",rank:"Cadet",phone:"7907466929",father:"MUJEEB RAHMAN K",mother:"SUMAYYA N",blood:"O+",dob:"07-12-2008",attendance:"NULL",className:"D2",image:"image/shamil.jpeg"},
-{no:"12",name:"MOHAMMED SHAMIL PT",cadetNo:"KL2025SDIA3211205",rank:"Cadet",phone:"9947634636",father:"SAKKEER PT",mother:"KHAIRUNNISA A",blood:"B+",dob:"14-03-2008",attendance:"NULL",className:"B2",image:"image/shamil pt.jpeg"},
-{no:"13",name:"MOHAMMED NAFIH O",cadetNo:"KL2025SDIA3211206",rank:"Cadet",phone:"9745452954",father:"NISHAD O",mother:"ARIFA V",blood:"O+",dob:"15-10-2008",attendance:"NULL",className:"B2",image:"image/nafi.jpeg"},
-{no:"14",name:"MOHAMMED SINAN PK",cadetNo:"KL2025SDIA3211207",rank:"Cadet",phone:"9961669073",father:"HUSSAIN PK",mother:"HAJARU CK",blood:"B+",dob:"22-08-2008",attendance:"NULL",className:"A2",image:"image/sinan pk.jpeg"},
-{no:"15",name:"ABDUL BASITH K",cadetNo:"KL2025SDIA3211208",rank:"Cadet",phone:"9048190494",father:"MOHAMMED BASHEER KORAMBI",mother:"SANEERA MK",blood:"B+",dob:"09-02-2009",attendance:"NULL",className:"C2",image:"image/basith.jpeg"},
-{no:"16",name:"MUHAMMED THANSEEH K",cadetNo:"KL2025SDIA3211260",rank:"Cadet",phone:"8590102357",father:"KABEER K",mother:"FATHIMA SUHARA T",blood:"O-",dob:"14-10-2009",attendance:"NULL",className:"B2",image:""},
-{no:"17",name:"MUHAMMED NASHIF E",cadetNo:"KL2025SDIA3211324",rank:"Cadet",phone:"8089042407",father:"NAVAS E",mother:"HAFSATH . K",blood:"O+",dob:"06-09-2008",attendance:"NULL",className:"B2",image:"image/nashif.jpeg"},
-{no:"18",name:"MUHAMMED SHIJAS P",cadetNo:"KL2025SDIA3211325",rank:"Cadet",phone:"9809346736",father:"NOUSHAD",mother:"SABILA",blood:"A+",dob:"05-08-2008",attendance:"NULL",className:"D2",image:"image/shijad.jpeg"},
-{no:"19",name:"MUHAMMED SALMAN PT",cadetNo:"KL2025SDIA3211326",rank:"Cadet",phone:"9605385831",father:"ABDUL JALEEL PT",mother:"JASEELA PT",blood:"A+",dob:"27-09-2008",attendance:"NULL",className:"C2",image:"image/salman.jpeg"},
-{no:"20",name:"MUHAMMED FARSIN C",cadetNo:"KL2025SDIA3211327",rank:"Cadet",phone:"9947443212",father:"MUHAMMED FAISAL C",mother:"SIFANATH M",blood:"B+",dob:"28-01-2009",attendance:"NULL",className:"D2",image:"image/farsin.jpeg"},
-{no:"21",name:"SHAHAN KP",cadetNo:"KL2025SDIA3211333",rank:"Cadet",phone:"9747328453",father:"SHIHABUDHEEN KP",mother:"NASEEMA PC",blood:"B+",dob:"06-05-2008",attendance:"NULL",className:"CS2",image:"image/shahan.jpeg"},
-{no:"22",name:"MUHAMMED SHIBIN MOIDHU M",cadetNo:"KL2025SDIA3211334",rank:"Cadet",phone:"6282107008",father:"MUHAMMED MUSTHAFA M",mother:"RUKSHANA TK",blood:"A+",dob:"05-02-2009",attendance:"NULL",className:"CS2",image:"image/shibin.jpeg"},
-{no:"23",name:"MUHAMMED SINAN K",cadetNo:"KL2025SDIA3211335",rank:"Cadet",phone:"7736031664",father:"RAFEEQUE K",mother:"NASEEMA",blood:"A+",dob:"02-01-2009",attendance:"NULL",className:"CS2",image:"image/sinan.jpeg"},
-{no:"24",name:"HANANA.P",cadetNo:"KL2025SWIA3211184",rank:"Cadet",phone:"9947316506",father:"ASHARAF ALI",mother:"ASMABI",blood:"A+",dob:"29-03-2009",attendance:"NULL",className:"A2",image:"image/hanana.jpeg"},
-{no:"25",name:"FATHIMA HAMNA M",cadetNo:"KL2025SWIA3211185",rank:"Cadet",phone:"7558921313",father:"ABDUL HAKKEEM M",mother:"SHAJEELA K",blood:"A+",dob:"28-02-2009",attendance:"NULL",className:"",image:"image/hamna.jpeg"},
-{no:"26",name:"RISHA K P",cadetNo:"KL2025SWIA3211186",rank:"Cadet",phone:"8137943920",father:"SHAMEER BABU",mother:"RAMSHEELA",blood:"O+",dob:"21-01-2009",attendance:"NULL",className:"",image:"image/risha (2).jpeg"},
-{no:"27",name:"SAFA MUFEEDA OK",cadetNo:"KL2025SWIA3211187",rank:"Cadet",phone:"8943821457",father:"ABDUL MAJEED OK",mother:"HASEENA K",blood:"A+",dob:"13-03-2009",attendance:"NULL",className:"B2",image:"image/safa.jpeg"},
-{no:"28",name:"FATHIMA DILSHA T. K",cadetNo:"KL2025SWIA3211188",rank:"Cadet",phone:"7012472252",father:"ABOOTHAHIR T K",mother:"SAMEERA",blood:"O+",dob:"20-01-2009",attendance:"NULL",className:"CS2",image:"image/dhilsha.jpeg"},
-{no:"29",name:"SHALBIYA SHIRIN P",cadetNo:"KL2025SWIA3211189",rank:"Cadet",phone:"8086244179",father:"HAMZA P",mother:"FOUSIYA K",blood:"B+",dob:"29-07-2008",attendance:"NULL",className:"CS2",image:"image/shalbiya.jpeg"},
-{no:"30",name:"FATHIMATH RINSHA. E. K",cadetNo:"KL2025SWIA3211190",rank:"Cadet",phone:"9747752291",father:"MUHAMMED RIYAS E K",mother:"RABIYA T",blood:"B+",dob:"13-02-2009",attendance:"NULL",className:"CS2",image:"image/rinsha ek.jpeg"},
-{no:"31",name:"FATHIMA HASNA S",cadetNo:"KL2025SWIA3211191",rank:"Cadet",phone:"8590511733",father:"MUHAMMED KUTTY",mother:"AYISHAMOL P T",blood:"B+",dob:"13-06-2007",attendance:"NULL",className:"",image:"image/hasna.jpeg"},
-{no:"32",name:"SHIFA FATHIMA O",cadetNo:"KL2025SWIA3211192",rank:"Cadet",phone:"7902327418",father:"GAFOOR O",mother:"JAMSHEERA K",blood:"B+",dob:"25-01-2009",attendance:"NULL",className:"CS2",image:"image/shifa.jpeg"},
-{no:"33",name:"FIDHA K",cadetNo:"KL2025SWIA3211193",rank:"Cadet",phone:"7025590463",father:"HARIS K",mother:"NUSRIYA P",blood:"O+",dob:"27-03-2010",attendance:"NULL",className:"",image:"image/fidha k.jpeg"},
-{no:"34",name:"DEVIKA GIRISH",cadetNo:"KL2025SWIA3211328",rank:"Cadet",phone:"6235041079",father:"GIRISH BALAKRISHNAN",mother:"SALINI GIRISH",blood:"A+",dob:"16-10-2009",attendance:"NULL",className:"",image:"image/devika.jpeg"},
-{no:"35",name:"P AMINA ANVAR",cadetNo:"KL2025SWIA3211329",rank:"Cadet",phone:"9995562500",father:"ANVAR P",mother:"JASEENA P",blood:"B-",dob:"06-03-2009",attendance:"NULL",className:"",image:"image/amina anwar.jpeg"},
-{no:"36",name:"FATHIMA RINSHA M",cadetNo:"KL2025SWIA3211330",rank:"Cadet",phone:"9747348873",father:"SIDHEEQ",mother:"RAMLATH PK",blood:"O-",dob:"05-12-2008",attendance:"NULL",className:"",image:"image/rinsha m.jpeg"},
-{no:"37",name:"MISNA JASMIN M",cadetNo:"KL2025SWIA3211331",rank:"Cadet",phone:"7909208914",father:"MUSTHAFA KAMAL",mother:"SHA FAZEELA K",blood:"A-",dob:"04-01-2009",attendance:"NULL",className:"A2",image:"image/misna.jpeg"},
-{no:"38",name:"FATHIMA FIDHA K",cadetNo:"KL2025SWIA3211332",rank:"Cadet",phone:"9526906047",father:"MUHAMMED SHABEER K",mother:"RAMSEENA",blood:"A+",dob:"04-07-2008",attendance:"NULL",className:"",image:"image/fidhak.jpeg"},
-{no:"39",name:"FATHIMA ASNA AK",cadetNo:"KL2025SWIA3211336",rank:"Cadet",phone:"7034925544",father:"ABOOBACKER A K",mother:"HARIFA ABOOBACKER",blood:"O+",dob:"26-11-2008",attendance:"NULL",className:"CS2",image:"image/asna.jpeg"}
+{no:"01",name:"MUHAMMED FAHEEM.",cadetNo:"KL2025SDIA3211194",rank:"Cadet",className:"B2",image:"image/faheem.jpeg"},
+{no:"02",name:"ALFAS TK",cadetNo:"KL2025SDIA3211195",rank:"Cadet",className:"CS2",image:"image/alfas.jpeg"},
+{no:"03",name:"AKHIL K",cadetNo:"KL2025SDIA3211196",rank:"Cadet",className:"E2",image:"image/akhil.jpeg"},
+{no:"04",name:"MOHAMMED NIHAL P P",cadetNo:"KL2025SDIA3211197",rank:"Cadet",className:"CS2",image:"image/nihal.jpeg"},
+{no:"05",name:"ABDULLA SHADI KK",cadetNo:"KL2025SDIA3211198",rank:"Cadet",className:"C2",image:"image/shadi.jpeg"},
+{no:"06",name:"MUHAMMED SHEFIN. V",cadetNo:"KL2025SDIA3211199",rank:"Cadet",className:"B2",image:"image/shefin v.jpeg"},
+{no:"07",name:"MUHAMMED SAFVAN TK",cadetNo:"KL2025SDIA3211200",rank:"Cadet",className:"CS2",image:"image/safwan.jpeg"},
+{no:"08",name:"MUHAMMED ANSHIF O",cadetNo:"KL2025SDIA3211202",rank:"Cadet",className:"D2",image:"image/anshif.jpeg"},
+{no:"09",name:"MUHAMMED SHIFIN ROSHEN K",cadetNo:"KL2025SDIA3211201",rank:"Cadet",className:"D2",image:"image/shifin rosen.jpeg"},
+{no:"10",name:"ABHINAND. V. K",cadetNo:"KL2025SDIA3211203",rank:"Cadet",className:"C2",image:"image/abinand.jpeg"},
+{no:"11",name:"MUHAMMED SHAMIL K",cadetNo:"KL2025SDIA3211204",rank:"Cadet",className:"D2",image:"image/shamil.jpeg"},
+{no:"12",name:"MOHAMMED SHAMIL PT",cadetNo:"KL2025SDIA3211205",rank:"Cadet",className:"B2",image:"image/shamil pt.jpeg"},
+{no:"13",name:"MOHAMMED NAFIH O",cadetNo:"KL2025SDIA3211206",rank:"Cadet",className:"B2",image:"image/nafi.jpeg"},
+{no:"14",name:"MOHAMMED SINAN PK",cadetNo:"KL2025SDIA3211207",rank:"Cadet",className:"A2",image:"image/sinan pk.jpeg"},
+{no:"15",name:"ABDUL BASITH K",cadetNo:"KL2025SDIA3211208",rank:"Cadet",className:"C2",image:"image/basith.jpeg"},
+{no:"16",name:"MUHAMMED THANSEEH K",cadetNo:"KL2025SDIA3211260",rank:"Cadet",className:"B2",image:""},
+{no:"17",name:"MUHAMMED NASHIF E",cadetNo:"KL2025SDIA3211324",rank:"Cadet",className:"B2",image:"image/nashif.jpeg"},
+{no:"18",name:"MUHAMMED SHIJAS P",cadetNo:"KL2025SDIA3211325",rank:"Cadet",className:"D2",image:"image/shijad.jpeg"},
+{no:"19",name:"MUHAMMED SALMAN PT",cadetNo:"KL2025SDIA3211326",rank:"Cadet",className:"C2",image:"image/salman.jpeg"},
+{no:"20",name:"MUHAMMED FARSIN C",cadetNo:"KL2025SDIA3211327",rank:"Cadet",className:"D2",image:"image/farsin.jpeg"},
+{no:"21",name:"SHAHAN KP",cadetNo:"KL2025SDIA3211333",rank:"Cadet",className:"CS2",image:"image/shahan.jpeg"},
+{no:"22",name:"MUHAMMED SHIBIN MOIDHU M",cadetNo:"KL2025SDIA3211334",rank:"Cadet",className:"CS2",image:"image/shibin.jpeg"},
+{no:"23",name:"MUHAMMED SINAN K",cadetNo:"KL2025SDIA3211335",rank:"Cadet",className:"CS2",image:"image/sinan.jpeg"},
+{no:"24",name:"HANANA.P",cadetNo:"KL2025SWIA3211184",rank:"Cadet",className:"A2",image:"image/hanana.jpeg"},
+{no:"25",name:"FATHIMA HAMNA M",cadetNo:"KL2025SWIA3211185",rank:"Cadet",className:"",image:"image/hamna.jpeg"},
+{no:"26",name:"RISHA K P",cadetNo:"KL2025SWIA3211186",rank:"Cadet",className:"",image:"image/risha (2).jpeg"},
+{no:"27",name:"SAFA MUFEEDA OK",cadetNo:"KL2025SWIA3211187",rank:"Cadet",className:"B2",image:"image/safa.jpeg"},
+{no:"28",name:"FATHIMA DILSHA T. K",cadetNo:"KL2025SWIA3211188",rank:"Cadet",className:"CS2",image:"image/dhilsha.jpeg"},
+{no:"29",name:"SHALBIYA SHIRIN P",cadetNo:"KL2025SWIA3211189",rank:"Cadet",className:"CS2",image:"image/shalbiya.jpeg"},
+{no:"30",name:"FATHIMATH RINSHA. E. K",cadetNo:"KL2025SWIA3211190",rank:"Cadet",className:"CS2",image:"image/rinsha ek.jpeg"},
+{no:"31",name:"FATHIMA HASNA S",cadetNo:"KL2025SWIA3211191",rank:"Cadet",className:"",image:"image/hasna.jpeg"},
+{no:"32",name:"SHIFA FATHIMA O",cadetNo:"KL2025SWIA3211192",rank:"Cadet",className:"CS2",image:"image/shifa.jpeg"},
+{no:"33",name:"FIDHA K",cadetNo:"KL2025SWIA3211193",rank:"Cadet",className:"",image:"image/fidha k.jpeg"},
+{no:"34",name:"DEVIKA GIRISH",cadetNo:"KL2025SWIA3211328",rank:"Cadet",className:"",image:"image/devika.jpeg"},
+{no:"35",name:"P AMINA ANVAR",cadetNo:"KL2025SWIA3211329",rank:"Cadet",className:"",image:"image/amina anwar.jpeg"},
+{no:"36",name:"FATHIMA RINSHA M",cadetNo:"KL2025SWIA3211330",rank:"Cadet",className:"",image:"image/rinsha m.jpeg"},
+{no:"37",name:"MISNA JASMIN M",cadetNo:"KL2025SWIA3211331",rank:"Cadet",className:"A2",image:"image/misna.jpeg"},
+{no:"38",name:"FATHIMA FIDHA K",cadetNo:"KL2025SWIA3211332",rank:"Cadet",className:"",image:"image/fidhak.jpeg"},
+{no:"39",name:"FATHIMA ASNA AK",cadetNo:"KL2025SWIA3211336",rank:"Cadet",className:"CS2",image:"image/asna.jpeg"}
 ];
 
 function escapeHTML(value){
@@ -388,7 +476,7 @@ function renderCadetCards(containerId, countId, records, searchInputId) {
  const query = (searchInput ? searchInput.value : "").trim().toLowerCase();
  
  const filtered = records.filter(c => [
-  c.no, c.name, c.cadetNo, c.rank, c.phone, c.father, c.mother, c.blood, c.dob, c.className, c.division
+  c.no, c.name, c.cadetNo, c.rank, c.className, c.division
  ].join(" ").toLowerCase().includes(query));
 
  const countEl = document.getElementById(countId);
@@ -402,15 +490,8 @@ function renderCadetCards(containerId, countId, records, searchInputId) {
  container.innerHTML = filtered.map(c => {
   const photo = c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
   const details = [
-   ["Cadet Number", c.cadetNo || "Not added"],
    ["Division", c.division],
    ["Rank", c.rank || "Cadet"],
-   ["Phone Number", c.phone || "Not added"],
-   ["Father Name", c.father || "Not added"],
-   ["Mother Name", c.mother || "Not added"],
-   ["Blood Group", c.blood || "Not added"],
-   ["Date of Birth", c.dob || "Not added"],
-   ["Attendance", c.attendance || "NULL"],
    ["Class Name", c.className || "Not added"]
   ];
   return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div></article>`;

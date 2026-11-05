@@ -292,7 +292,16 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 // Public browser configuration only. Never put a Supabase secret/service_role key here.
 const SUPABASE_URL = "https://sueqaurfxffoefukllqx.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_0QsnCfsnGj04F8px3HeC2w_zyTnek";
-const nccSupabase = window.supabase.createClient(https://sueqaurfxffoefukllqx.supabase.co,sb_publishable_0QsnCfsnGj04F8px3HeC2w_zyTnek );
+
+// Supabase browser client: use the project's Publishable key only.
+// Never put a service_role or secret key in this public HTML.
+if (!window.supabase || typeof window.supabase.createClient !== "function") {
+  throw new Error("Supabase library did not load. Check your internet connection and refresh.");
+}
+if (!SUPABASE_URL.startsWith("https://") || !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")) {
+  throw new Error("Supabase configuration is missing or malformed. Recheck Project URL and Publishable key.");
+}
+const nccSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 let selectedStaffRole = null;
 let signedInStaffRole = null;
 function openStaffLogin(){
@@ -303,8 +312,7 @@ function openStaffLogin(){
 function closeStaffLogin(){document.getElementById('staffLoginModal').classList.remove('open');}
 function chooseStaffRole(role){
  selectedStaffRole=role;
- const emailByRole={admin:'Niihaallley@gmail.com',ano:'Nihalppthootha@gmail.com'};
- document.getElementById('staffEmail').value=emailByRole[role] || '';
+ document.getElementById('staffEmail').value='';
  document.getElementById('staffRoleChoices').style.display='none';
  document.getElementById('staffLoginForm').style.display='block';
  document.getElementById('staffLoginHint').textContent='Sign in with the '+role.toUpperCase()+' account.';
@@ -326,7 +334,12 @@ async function submitStaffLogin(event){
  const password=document.getElementById('staffPassword').value;
  try{
   const {data,error}=await nccSupabase.auth.signInWithPassword({email,password});
-  if(error) throw error;
+  if(error) {
+   if (/invalid api key/i.test(error.message || "")) {
+    throw new Error("Supabase rejected the Publishable key. In Supabase Dashboard → Project Settings → API Keys, copy the Publishable key for THIS project and replace SUPABASE_PUBLISHABLE_KEY in this file. Do not use a secret/service_role key.");
+   }
+   throw error;
+  }
   const {data:roleRow,error:roleError}=await nccSupabase.from('user_roles').select('role').eq('user_id',data.user.id).single();
   if(roleError || !roleRow || roleRow.role!==selectedStaffRole){
    await nccSupabase.auth.signOut();

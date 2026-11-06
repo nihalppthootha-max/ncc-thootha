@@ -347,14 +347,15 @@ async function submitStaffLogin(event){
   }
   signedInStaffRole=roleRow.role;
   status.textContent='Signed in as '+signedInStaffRole.toUpperCase()+'.';
-  document.getElementById('staffLoginHint').textContent='Login verified. The editing dashboard is not added yet.';
+  document.getElementById('staffLoginHint').textContent='Login verified. You can now manage cadet records.';
   document.getElementById('staffLoginForm').style.display='none';
-  document.getElementById('staffRoleChoices').innerHTML='<button type="button" onclick="staffSignOut()">Sign out</button><button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>';
+  document.getElementById('staffRoleChoices').innerHTML='<button type="button" onclick="openCadetEditor()">Add New Cadet</button><button class="secondary" type="button" onclick="staffSignOut()">Sign out</button><button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>';
+  await loadCadetChanges();
  }catch(error){status.textContent=error.message || 'Login failed. Check your details and try again.';}
  finally{submit.disabled=false;}
 }
 async function staffSignOut(){
- await nccSupabase.auth.signOut(); signedInStaffRole=null;
+ await nccSupabase.auth.signOut(); signedInStaffRole=null; refreshCadetViews();
  document.getElementById('staffRoleChoices').innerHTML='<button type="button" onclick="chooseStaffRole(\'admin\')">Admin Login</button><button type="button" onclick="chooseStaffRole(\'ano\')">ANO Login</button><button class="secondary" type="button" onclick="closeStaffLogin()">Close</button>';
  backToStaffRoles();
 }
@@ -507,17 +508,21 @@ function renderCadetCards(containerId, countId, records, searchInputId) {
    ["Rank", c.rank || "Cadet"],
    ["Class Name", c.className || "Not added"]
   ];
-  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div></article>`;
+  const key = cadetKey(c.year || (firstYear.includes(c) ? "2026-27-first" : "2026-27-second"), c.division, c.no);
+  const controls = signedInStaffRole ? `<div style="display:flex;gap:8px;padding:0 14px 14px"><button type="button" data-edit-key="${escapeHTML(key)}">Edit</button>${signedInStaffRole === "admin" ? `<button class="secondary" type="button" data-delete-key="${escapeHTML(key)}">Remove</button>` : ""}</div>` : "";
+  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div>${controls}</article>`;
  }).join("");
+ container.querySelectorAll("[data-edit-key]").forEach(btn => btn.addEventListener("click", () => editCadet(btn.dataset.editKey)));
+ container.querySelectorAll("[data-delete-key]").forEach(btn => btn.addEventListener("click", () => removeCadet(btn.dataset.deleteKey)));
 }
 
 function displayFirstCadets(division){
- const records = firstYear.filter(c => c.division === division);
+ const records = getVisibleCadets("first", division);
  renderCadetCards("firstCadetContainer" + division, "firstCadetCount" + division, records, "firstSearchInput" + division);
 }
 
 function displayCadets(division){
- const records = secondYear.map((c, index) => ({...c, division: index < 23 ? "SD" : "SW"})).filter(c => c.division === division);
+ const records = getVisibleCadets("second", division);
  renderCadetCards("cadetContainer" + division, "cadetCount" + division, records, "searchInput" + division);
 }
 
@@ -534,6 +539,88 @@ function backToDivisions(year){
  const prefix = year === 'first' ? 'first' : 'second';
  document.querySelectorAll('#' + prefix + 'Year .division-panel').forEach(p => p.classList.remove('active'));
  document.getElementById(prefix + 'DivisionPicker').style.display = 'grid';
+}
+
+// Cadet editor: existing static records remain intact. Supabase stores only changes/additions.
+let cadetChanges = [];
+function cadetKey(year, division, no){ return `${year}-${division}-${String(no).trim()}`; }
+function getBaseCadets(year){
+ if(year === "first") return firstYear.map(c => ({...c, year:"first"}));
+ return secondYear.map((c,index) => ({...c, division:index < 23 ? "SD":"SW", year:"second"}));
+}
+function getVisibleCadets(year, division){
+ const base = getBaseCadets(year).filter(c => c.division === division);
+ const map = new Map(base.map(c => [cadetKey(year,division,c.no), c]));
+ cadetChanges.forEach(change => {
+  const r = change.record || {};
+  if(r.year !== year || r.division !== division) return;
+  const key = cadetKey(year,division,r.no);
+  if(change.action === "delete") map.delete(key); else map.set(key, {...r, year});
+ });
+ return [...map.values()];
+}
+async function loadCadetChanges(){
+ const {data,error} = await nccSupabase.from("cadet_changes").select("cadet_key,action,record");
+ if(error){ console.error("Could not load saved cadet changes",error); alert("Login succeeded, but cadet editor data could not load. Run the supplied Supabase SQL setup first."); return; }
+ cadetChanges = data || [];
+ ["SD","SW"].forEach(d => { displayFirstCadets(d); displayCadets(d); });
+}
+function refreshCadetViews(){ ["SD","SW"].forEach(d => { displayFirstCadets(d); displayCadets(d); }); }
+function askCadetDetails(existing){
+ const year = prompt("Academic group: enter first or second", existing?.year || "first");
+ if(!year || !["first","second"].includes(year.toLowerCase())) return null;
+ const y=year.toLowerCase();
+ const division = (prompt("Division: SD or SW", existing?.division || "SD") || "").toUpperCase();
+ if(!["SD","SW"].includes(division)) { alert("Division must be SD or SW."); return null; }
+ const no = prompt("Serial number", existing?.no || ""); if(no===null || !no.trim()) return null;
+ const name = prompt("Cadet full name", existing?.name || ""); if(name===null || !name.trim()) return null;
+ const cadetNo = prompt("Cadet number", existing?.cadetNo || "Not added"); if(cadetNo===null) return null;
+ const rank = prompt("Rank", existing?.rank || "Cadet"); if(rank===null) return null;
+ const className = prompt("Class", existing?.className || "Not added"); if(className===null) return null;
+ return {year:y,division,no:no.trim(),name:name.trim(),cadetNo:cadetNo.trim(),rank:rank.trim(),className:className.trim(),image:existing?.image || ""};
+}
+async function saveCadet(record, oldKey){
+ const key=cadetKey(record.year,record.division,record.no);
+ const {error}=await nccSupabase.from("cadet_changes").upsert({cadet_key:key,action:"upsert",record,updated_at:new Date().toISOString()},{onConflict:"cadet_key"});
+ if(error){alert("Could not save cadet: "+error.message);return;}
+ if(oldKey && oldKey!==key){ const {error:delErr}=await nccSupabase.from("cadet_changes").upsert({cadet_key:oldKey,action:"delete",record:{year:record.year,division:record.division,no:oldKey.split("-").pop()},updated_at:new Date().toISOString()},{onConflict:"cadet_key"}); if(delErr) console.error(delErr); }
+ await loadCadetChanges(); alert("Cadet details saved.");
+}
+async function uploadCadetPhoto(record){
+ return new Promise(resolve=>{
+  const input=document.createElement("input"); input.type="file"; input.accept="image/*";
+  input.onchange=async()=>{
+   const file=input.files?.[0]; if(!file){resolve(record.image);return;}
+   const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+   const path=`${record.year}/${record.division}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+   const {error}=await nccSupabase.storage.from("cadet-photos").upload(path,file,{upsert:false,contentType:file.type});
+   if(error){alert("Photo upload failed: "+error.message);resolve(record.image);return;}
+   const {data}=nccSupabase.storage.from("cadet-photos").getPublicUrl(path); resolve(data.publicUrl);
+  };
+  input.click();
+ });
+}
+async function openCadetEditor(){
+ if(!signedInStaffRole){alert("Please sign in first.");return;}
+ const record=askCadetDetails(null); if(!record)return;
+ if(confirm("Would you like to upload a cadet photo now?")) record.image=await uploadCadetPhoto(record);
+ await saveCadet(record);
+}
+async function editCadet(key){
+ if(!signedInStaffRole)return;
+ const [year,division,...noParts]=key.split("-"); const no=noParts.join("-");
+ const existing=getVisibleCadets(year,division).find(c=>String(c.no)===no); if(!existing)return;
+ const updated=askCadetDetails(existing); if(!updated)return;
+ if(confirm("Upload/replace this cadet photo? Choose Cancel to keep the current photo.")) updated.image=await uploadCadetPhoto(updated);
+ await saveCadet(updated,key);
+}
+async function removeCadet(key){
+ if(signedInStaffRole!=="admin")return;
+ if(!confirm("Remove this cadet from the public directory? This will not delete the original photo file."))return;
+ const [year,division,...parts]=key.split("-"); const no=parts.join("-");
+ const {error}=await nccSupabase.from("cadet_changes").upsert({cadet_key:key,action:"delete",record:{year,division,no},updated_at:new Date().toISOString()},{onConflict:"cadet_key"});
+ if(error){alert("Could not remove cadet: "+error.message);return;}
+ await loadCadetChanges();
 }
 
 function sendAdminMessage(method){

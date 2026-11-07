@@ -91,6 +91,24 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 .staff-actions button.secondary{background:#e8efe9;color:#102b24}
 .staff-status{min-height:22px;font-size:.9rem;margin-top:10px}
 
+
+/* Simple full-details cadet editor */
+.cadet-editor-modal{display:none;position:fixed;inset:0;background:#071b16c7;z-index:1200;align-items:center;justify-content:center;padding:14px}
+.cadet-editor-modal.open{display:flex}
+.cadet-editor-dialog{width:min(100%,850px);max-height:94vh;overflow:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 18px 60px #0005}
+.cadet-editor-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+.cadet-editor-head h2{margin:0;color:var(--navy)}
+.cadet-editor-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cadet-editor-form label{display:block;font-weight:700;font-size:.88rem;color:#385746;margin-bottom:5px}
+.cadet-editor-form input,.cadet-editor-form select{width:100%;min-height:42px;padding:10px;border:1px solid #cbdccf;border-radius:9px;font:inherit;background:#fff}
+.cadet-editor-form .wide{grid-column:1/-1}
+.cadet-editor-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.cadet-editor-actions button{border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer}
+.cadet-editor-note{background:#fff8e7;border:1px solid #f0dfad;padding:10px 12px;border-radius:9px;color:#66501b;font-size:.88rem;line-height:1.45;margin-bottom:14px}
+.cadet-private{margin-top:10px;padding-top:10px;border-top:1px dashed #d6e3d8;color:#65786d;font-size:.82rem}
+.cadet-editor-status{min-height:20px;margin-top:10px;font-size:.9rem;color:var(--green)}
+@media(max-width:560px){.cadet-editor-form{grid-template-columns:1fr}.cadet-editor-form .wide{grid-column:auto}.cadet-editor-dialog{padding:15px}}
+
 </style>
 </head>
 <body>
@@ -286,6 +304,38 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
   <div class="staff-status" id="staffLoginStatus" aria-live="polite"></div>
  </div>
 </div>
+
+<div class="cadet-editor-modal" id="cadetEditorModal" role="dialog" aria-modal="true" aria-labelledby="cadetEditorTitle">
+ <div class="cadet-editor-dialog">
+  <div class="cadet-editor-head"><h2 id="cadetEditorTitle">Cadet Details</h2><button type="button" class="secondary" onclick="closeCadetEditor()">✕ Close</button></div>
+  <div class="cadet-editor-note">Personal details such as date of birth, parent names and phone number are stored for staff use and are NOT shown on the public cadet cards.</div>
+  <form id="cadetEditorForm">
+   <div class="cadet-editor-form">
+    <div><label for="editYear">Academic Year Group</label><select id="editYear" required><option value="first">First Year</option><option value="second">Second Year</option></select></div>
+    <div><label for="editDivision">Division</label><select id="editDivision" required><option>SD</option><option>SW</option></select></div>
+    <div><label for="editNo">Serial Number</label><input id="editNo" required maxlength="5" placeholder="01"></div>
+    <div><label for="editName">Cadet Full Name</label><input id="editName" required maxlength="120"></div>
+    <div><label for="editCadetNo">Cadet Number</label><input id="editCadetNo" maxlength="60" placeholder="Not added"></div>
+    <div><label for="editRank">Rank</label><input id="editRank" maxlength="50" value="Cadet"></div>
+    <div><label for="editClassName">Class Name</label><input id="editClassName" maxlength="60"></div>
+    <div><label for="editDob">Date of Birth</label><input id="editDob" type="date"></div>
+    <div><label for="editFather">Father's Name</label><input id="editFather" maxlength="120"></div>
+    <div><label for="editMother">Mother's Name</label><input id="editMother" maxlength="120"></div>
+    <div><label for="editPhone">Phone Number</label><input id="editPhone" type="tel" maxlength="20"></div>
+    <div><label for="editBlood">Blood Group</label><select id="editBlood"><option value="">Select / Not added</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+    <div><label for="editAttendance">Attendance</label><input id="editAttendance" maxlength="40" placeholder="e.g. 85%"></div>
+    <div><label for="editImage">Photo URL (optional)</label><input id="editImage" maxlength="500" placeholder="Existing photo path or URL"></div>
+   </div>
+   <div class="cadet-editor-actions">
+    <button class="primary" id="cadetSaveButton" type="submit">Save Cadet Details</button>
+    <button class="secondary" type="button" onclick="chooseCadetPhoto()">Upload / Change Photo</button>
+    <button class="secondary" type="button" onclick="closeCadetEditor()">Cancel</button>
+   </div>
+   <div class="cadet-editor-status" id="cadetEditorStatus" aria-live="polite"></div>
+  </form>
+ </div>
+</div>
+
 <footer>DUHSS THOOTHA NCC Cadet Directory · 28 Kerala Battalion NCC, Ottapalam</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -362,7 +412,7 @@ async function staffSignOut(){
 </script>
 <script>
 const firstYear = [
-{no:"01",name:"S0MIR CHARAH",cadetNo:"not addedni",rank:"Cadet",className:"Not added",division:"SD",image:"image/somir.jpeg"},
+{no:"01",name:"SOMIR CHARAH",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/somir.jpeg"},
 {no:"02",name:"MOHAMMED NAHAL C P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/nahalcp.jpeg"},
 {no:"03",name:"MOHAMMED SHAMEEL M P",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shameel.jpeg"},
 {no:"04",name:"MUHAMMED SHAHALAD KK",cadetNo:"Not added",rank:"Cadet",className:"Not added",division:"SD",image:"image/shahalad.jpeg"},
@@ -503,14 +553,23 @@ function renderCadetCards(containerId, countId, records, searchInputId) {
 
  container.innerHTML = filtered.map(c => {
   const photo = c.image ? `<img class="cadet-photo" src="${escapeHTML(c.image.trim())}" alt="Photo of ${escapeHTML(c.name)}" loading="lazy" onerror="showNoPhoto(this)">` : '<div class="empty-state" style="border-radius:0;padding:35px 10px">Photo unavailable</div>';
+  // Public card details: visible to everyone.
   const details = [
    ["Division", c.division],
    ["Rank", c.rank || "Cadet"],
-   ["Class Name", c.className || "Not added"]
+   ["Class Name", c.className || "Not added"],
+   ["Date of Birth", c.dateOfBirth],
+   ["Father's Name", c.fatherName],
+   ["Mother's Name", c.motherName],
+   ["Blood Group", c.bloodGroup],
+   ["Attendance", c.attendance]
   ];
+  // Phone number is shown only to authenticated staff (Admin / ANO).
+  const privateDetails = signedInStaffRole ? [["Phone Number", c.phone]].filter(([,v]) => v) : [];
   const key = cadetKey(c.year || (firstYear.includes(c) ? "2026-27-first" : "2026-27-second"), c.division, c.no);
   const controls = signedInStaffRole ? `<div style="display:flex;gap:8px;padding:0 14px 14px"><button type="button" data-edit-key="${escapeHTML(key)}">Edit</button>${signedInStaffRole === "admin" ? `<button class="secondary" type="button" data-delete-key="${escapeHTML(key)}">Remove</button>` : ""}</div>` : "";
-  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div>${controls}</article>`;
+  const privateHtml = privateDetails.length ? `<div class="cadet-private"><b>Staff-only details</b>${privateDetails.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value)}</span></div>`).join("")}</div>` : "";
+  return `<article class="cadet-card">${photo}<div class="cadet-header"><h3>${escapeHTML(c.no)} · ${escapeHTML(c.name)}</h3><div class="number">${escapeHTML(c.cadetNo || "Not added")}</div></div><div class="cadet-details">${details.map(([label,value])=>`<div class="detail"><b>${escapeHTML(label)}</b><span>${escapeHTML(value || "Not added")}</span></div>`).join("")}${privateHtml}</div>${controls}</article>`;
  }).join("");
  container.querySelectorAll("[data-edit-key]").forEach(btn => btn.addEventListener("click", () => editCadet(btn.dataset.editKey)));
  container.querySelectorAll("[data-delete-key]").forEach(btn => btn.addEventListener("click", () => removeCadet(btn.dataset.deleteKey)));
@@ -559,33 +618,124 @@ function getVisibleCadets(year, division){
  });
  return [...map.values()];
 }
+async function loadPublicCadetChanges(){
+ const {data,error}=await nccSupabase.from("cadet_public_changes").select("cadet_key,action,record");
+ if(error){console.error("Could not load public cadet updates",error);return;}
+ const publicRows=data||[];
+ // Public rows contain only directory-safe fields; private fields stay in cadet_changes.
+ cadetChanges=publicRows;
+ ["SD","SW"].forEach(d=>{displayFirstCadets(d);displayCadets(d);});
+}
 async function loadCadetChanges(){
  const {data,error} = await nccSupabase.from("cadet_changes").select("cadet_key,action,record");
- if(error){ console.error("Could not load saved cadet changes",error); alert("Login succeeded, but cadet editor data could not load. Run the supplied Supabase SQL setup first."); return; }
+ if(error){
+  console.error("Could not load saved cadet changes",error);
+  throw new Error("Could not load saved cadet records: "+error.message+". Check the Supabase SQL setup and table permissions.");
+ }
  cadetChanges = data || [];
  ["SD","SW"].forEach(d => { displayFirstCadets(d); displayCadets(d); });
 }
 function refreshCadetViews(){ ["SD","SW"].forEach(d => { displayFirstCadets(d); displayCadets(d); }); }
-function askCadetDetails(existing){
- const year = prompt("Academic group: enter first or second", existing?.year || "first");
- if(!year || !["first","second"].includes(year.toLowerCase())) return null;
- const y=year.toLowerCase();
- const division = (prompt("Division: SD or SW", existing?.division || "SD") || "").toUpperCase();
- if(!["SD","SW"].includes(division)) { alert("Division must be SD or SW."); return null; }
- const no = prompt("Serial number", existing?.no || ""); if(no===null || !no.trim()) return null;
- const name = prompt("Cadet full name", existing?.name || ""); if(name===null || !name.trim()) return null;
- const cadetNo = prompt("Cadet number", existing?.cadetNo || "Not added"); if(cadetNo===null) return null;
- const rank = prompt("Rank", existing?.rank || "Cadet"); if(rank===null) return null;
- const className = prompt("Class", existing?.className || "Not added"); if(className===null) return null;
- return {year:y,division,no:no.trim(),name:name.trim(),cadetNo:cadetNo.trim(),rank:rank.trim(),className:className.trim(),image:existing?.image || ""};
+
+let editingCadetOldKey = null;
+let editingCadetRecord = null;
+
+function openCadetForm(existing=null, oldKey=null){
+ if(!signedInStaffRole){alert("Please sign in first.");return;}
+ editingCadetOldKey=oldKey;
+ editingCadetRecord=existing;
+ const form=document.getElementById("cadetEditorForm");
+ form.reset();
+ const values={
+  editYear:existing?.year || "first", editDivision:existing?.division || "SD",
+  editNo:existing?.no || "", editName:existing?.name || "",
+  editCadetNo:existing?.cadetNo || "", editRank:existing?.rank || "Cadet",
+  editClassName:existing?.className || "", editDob:existing?.dateOfBirth || "",
+  editFather:existing?.fatherName || "", editMother:existing?.motherName || "",
+  editPhone:existing?.phone || "", editBlood:existing?.bloodGroup || "",
+  editAttendance:existing?.attendance || "", editImage:existing?.image || ""
+ };
+ Object.entries(values).forEach(([id,value])=>{document.getElementById(id).value=value;});
+ document.getElementById("cadetEditorTitle").textContent=existing ? "Edit Cadet Details" : "Add New Cadet";
+ document.getElementById("cadetEditorStatus").textContent="";
+ document.getElementById("cadetSaveButton").disabled=false;
+ document.getElementById("cadetEditorModal").classList.add("open");
+}
+function closeCadetEditor(){
+ document.getElementById("cadetEditorModal").classList.remove("open");
+ editingCadetOldKey=null; editingCadetRecord=null;
+}
+function chooseCadetPhoto(){
+ const current=readCadetForm();
+ uploadCadetPhoto(current).then(url=>{
+  if(url) document.getElementById("editImage").value=url;
+ });
+}
+function readCadetForm(){
+ return {
+  year:document.getElementById("editYear").value,
+  division:document.getElementById("editDivision").value,
+  no:document.getElementById("editNo").value.trim().padStart(2,"0"),
+  name:document.getElementById("editName").value.trim(),
+  cadetNo:document.getElementById("editCadetNo").value.trim(),
+  rank:document.getElementById("editRank").value.trim() || "Cadet",
+  className:document.getElementById("editClassName").value.trim(),
+  dateOfBirth:document.getElementById("editDob").value,
+  fatherName:document.getElementById("editFather").value.trim(),
+  motherName:document.getElementById("editMother").value.trim(),
+  phone:document.getElementById("editPhone").value.trim(),
+  bloodGroup:document.getElementById("editBlood").value,
+  attendance:document.getElementById("editAttendance").value.trim(),
+  image:document.getElementById("editImage").value.trim()
+ };
 }
 async function saveCadet(record, oldKey){
  const key=cadetKey(record.year,record.division,record.no);
- const {error}=await nccSupabase.from("cadet_changes").upsert({cadet_key:key,action:"upsert",record,updated_at:new Date().toISOString()},{onConflict:"cadet_key"});
- if(error){alert("Could not save cadet: "+error.message);return;}
- if(oldKey && oldKey!==key){ const {error:delErr}=await nccSupabase.from("cadet_changes").upsert({cadet_key:oldKey,action:"delete",record:{year:record.year,division:record.division,no:oldKey.split("-").pop()},updated_at:new Date().toISOString()},{onConflict:"cadet_key"}); if(delErr) console.error(delErr); }
- await loadCadetChanges(); alert("Cadet details saved.");
+ const status=document.getElementById("cadetEditorStatus");
+ const saveButton=document.getElementById("cadetSaveButton");
+ saveButton.disabled=true; status.textContent="Saving to database…";
+ try{
+  const {error}=await nccSupabase.from("cadet_changes").upsert({
+   cadet_key:key, action:"upsert", record, updated_at:new Date().toISOString()
+  },{onConflict:"cadet_key"});
+  if(error) throw error;
+  const publicRecord={year:record.year,division:record.division,no:record.no,name:record.name,cadetNo:record.cadetNo,rank:record.rank,className:record.className,image:record.image};
+  const {error:publicError}=await nccSupabase.from("cadet_public_changes").upsert({
+   cadet_key:key,action:"upsert",record:publicRecord,updated_at:new Date().toISOString()
+  },{onConflict:"cadet_key"});
+  if(publicError) throw new Error("Private record saved, but public directory update failed: "+publicError.message);
+  if(oldKey && oldKey!==key){
+   const oldRecord=editingCadetRecord || {};
+   const oldParts=oldKey.split("-");
+   const oldYear=oldRecord.year || oldParts[0];
+   const oldDivision=oldRecord.division || oldParts[1];
+   const oldNo=oldRecord.no || oldParts.slice(2).join("-");
+   const {error:delErr}=await nccSupabase.from("cadet_changes").upsert({
+    cadet_key:oldKey, action:"delete",
+    record:{year:oldYear,division:oldDivision,no:oldNo},
+    updated_at:new Date().toISOString()
+   },{onConflict:"cadet_key"});
+   if(delErr) throw delErr;
+   const {error:publicDeleteError}=await nccSupabase.from("cadet_public_changes").upsert({
+    cadet_key:oldKey,action:"delete",record:{year:oldYear,division:oldDivision,no:oldNo},updated_at:new Date().toISOString()
+   },{onConflict:"cadet_key"});
+   if(publicDeleteError) throw publicDeleteError;
+  }
+  await loadCadetChanges();
+  status.textContent="Saved successfully. Changes will remain after reopening the website.";
+  setTimeout(closeCadetEditor,700);
+ }catch(error){
+  console.error("Cadet save failed:",error);
+  status.textContent="Save failed: "+(error.message || "Check Supabase table and permissions.");
+  alert("Could not save cadet details.\\n\\n"+(error.message || "Check Supabase setup."));
+ }finally{saveButton.disabled=false;}
 }
+document.getElementById("cadetEditorForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const record=readCadetForm();
+ if(!record.name || !record.no){alert("Enter cadet name and serial number.");return;}
+ await saveCadet(record,editingCadetOldKey);
+});
 async function uploadCadetPhoto(record){
  return new Promise(resolve=>{
   const input=document.createElement("input"); input.type="file"; input.accept="image/*";
@@ -600,19 +750,16 @@ async function uploadCadetPhoto(record){
   input.click();
  });
 }
+
 async function openCadetEditor(){
- if(!signedInStaffRole){alert("Please sign in first.");return;}
- const record=askCadetDetails(null); if(!record)return;
- if(confirm("Would you like to upload a cadet photo now?")) record.image=await uploadCadetPhoto(record);
- await saveCadet(record);
+ openCadetForm(null,null);
 }
 async function editCadet(key){
  if(!signedInStaffRole)return;
  const [year,division,...noParts]=key.split("-"); const no=noParts.join("-");
- const existing=getVisibleCadets(year,division).find(c=>String(c.no)===no); if(!existing)return;
- const updated=askCadetDetails(existing); if(!updated)return;
- if(confirm("Upload/replace this cadet photo? Choose Cancel to keep the current photo.")) updated.image=await uploadCadetPhoto(updated);
- await saveCadet(updated,key);
+ const existing=getVisibleCadets(year,division).find(c=>String(c.no)===no);
+ if(!existing)return;
+ openCadetForm(existing,key);
 }
 async function removeCadet(key){
  if(signedInStaffRole!=="admin")return;
@@ -620,6 +767,8 @@ async function removeCadet(key){
  const [year,division,...parts]=key.split("-"); const no=parts.join("-");
  const {error}=await nccSupabase.from("cadet_changes").upsert({cadet_key:key,action:"delete",record:{year,division,no},updated_at:new Date().toISOString()},{onConflict:"cadet_key"});
  if(error){alert("Could not remove cadet: "+error.message);return;}
+ const {error:publicError}=await nccSupabase.from("cadet_public_changes").upsert({cadet_key:key,action:"delete",record:{year,division,no},updated_at:new Date().toISOString()},{onConflict:"cadet_key"});
+ if(publicError){alert("Private record removed, but public directory update failed: "+publicError.message);return;}
  await loadCadetChanges();
 }
 
@@ -673,6 +822,9 @@ function showPage(pageId, button){
  if(pageId !== "ano" && pageId !== "about" && pageId !== "contact") document.getElementById("infoMenu").value = "";
  window.scrollTo({top: 0, behavior: "smooth"});
 }
+
+// Load public-safe saved changes whenever the site opens, including for visitors.
+loadPublicCadetChanges();
 
 const fInSD = document.getElementById("firstSearchInputSD");
 if(fInSD) fInSD.addEventListener("input", () => displayFirstCadets("SD"));

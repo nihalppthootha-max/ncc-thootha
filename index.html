@@ -308,7 +308,7 @@ footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem;bo
 <div class="cadet-editor-modal" id="cadetEditorModal" role="dialog" aria-modal="true" aria-labelledby="cadetEditorTitle">
  <div class="cadet-editor-dialog">
   <div class="cadet-editor-head"><h2 id="cadetEditorTitle">Cadet Details</h2><button type="button" class="secondary" onclick="closeCadetEditor()">✕ Close</button></div>
-  <div class="cadet-editor-note">Personal details such as date of birth, parent names and phone number are stored for staff use and are NOT shown on the public cadet cards.</div>
+  <div class="cadet-editor-note">Date of birth, parent names, blood group and attendance appear on public cadet cards. Phone numbers are visible only to signed-in Admin / ANO staff.</div>
   <form id="cadetEditorForm">
    <div class="cadet-editor-form">
     <div><label for="editYear">Academic Year Group</label><select id="editYear" required><option value="first">First Year</option><option value="second">Second Year</option></select></div>
@@ -602,7 +602,7 @@ function backToDivisions(year){
 
 // Cadet editor: existing static records remain intact. Supabase stores only changes/additions.
 let cadetChanges = [];
-function cadetKey(year, division, no){ return `${year}-${division}-${String(no).trim()}`; }
+function cadetKey(year, division, no){ const serial=String(no ?? "").trim(); return `${year}-${division}-${/^\d+$/.test(serial) ? serial.padStart(2,"0") : serial}`; }
 function getBaseCadets(year){
  if(year === "first") return firstYear.map(c => ({...c, year:"first"}));
  return secondYear.map((c,index) => ({...c, division:index < 23 ? "SD":"SW", year:"second"}));
@@ -699,7 +699,7 @@ async function saveCadet(record, oldKey){
    cadet_key:key, action:"upsert", record, updated_at:new Date().toISOString()
   },{onConflict:"cadet_key"});
   if(error) throw error;
-  const publicRecord={year:record.year,division:record.division,no:record.no,name:record.name,cadetNo:record.cadetNo,rank:record.rank,className:record.className,image:record.image};
+  const publicRecord={year:record.year,division:record.division,no:record.no,name:record.name,cadetNo:record.cadetNo,rank:record.rank,className:record.className,image:record.image,dateOfBirth:record.dateOfBirth,fatherName:record.fatherName,motherName:record.motherName,bloodGroup:record.bloodGroup,attendance:record.attendance};
   const {error:publicError}=await nccSupabase.from("cadet_public_changes").upsert({
    cadet_key:key,action:"upsert",record:publicRecord,updated_at:new Date().toISOString()
   },{onConflict:"cadet_key"});
